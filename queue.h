@@ -3,6 +3,8 @@
 # include <stdint.h>
 # include <stdbool.h>
 
+# include "huffman.h"
+
 typedef treeNode item; // treeNode defined in huffman.h 
 typedef struct queue
 {
@@ -11,13 +13,13 @@ typedef struct queue
 	item *Q; 			 // Array to hold it (via calloc)
 } queue;
 
-queue *newQueue(uint32_t size); // Constructor
-void delQueue(queue *q); 		// Deconstructor
+queue *newQueue(uint32_t); 		// Constructor
+void delQueue(queue *); 		// Deconstructor
 
-bool empty(queue *q);	// Is it empty?
-bool full (queue *q);	// Is it full?
+bool empty(queue *);	// Is it empty?
+bool full (queue *);	// Is it full?
 
-bool enqueue(queue *q, item i); // Add an item
-bool dequeue(queue *q, item *i); // Remove from the rear 
+bool enqueue(queue *, item ); // Add an item
+bool dequeue(queue *, item *); // Remove from the rear 
 
 # endif
