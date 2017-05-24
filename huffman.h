@@ -11,15 +11,9 @@ typedef struct DAH treeNode;
 
 struct DAH
 {
-<<<<<<< HEAD
-	uint8_t symbol;
-	uint64_t count;
-	bool leaf;
-=======
 	uint8_t  symbol;
 	uint64_t count;
 	bool     leaf;
->>>>>>> d6b389ef141876aed6c8917d41717683fa9586d3
 	treeNode *left, *right;
 }; 
 
