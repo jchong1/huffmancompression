@@ -5,15 +5,26 @@
 
 # include "huffman.h"
 
+// New node, with symbols, leaf or not, a count associated with it
 treeNode *newNode(uint8_t s, bool l, uint64_t c)
 {
-	// code
+	// allocate space for a treeNode
+	struct treeNode *node = (listNode *) malloc(sizeof(listNode));
+	// set members of struct treeNode
+	node -> symbols = s;
+	node -> leaf = l;
+	node -> count = c;
+	node -> *right = NULL;
+	node -> *left = NULL;
+	return node;
 }
 
 // Delete a tree
 treeNode *delTree(treeNode *t)
 {
-	
+	// free allocated memory
+	free(t);
+	return;
 }
 
 // Dump a Huffman tree onto a file
@@ -45,4 +56,3 @@ treeNode *join(treeNode *l, treeNode *r)
 {
 	// code
 }
-
