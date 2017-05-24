@@ -22,9 +22,17 @@ treeNode *newNode(uint8_t s, bool l, uint64_t c)
 // Delete a tree
 treeNode *delTree(treeNode *t)
 {
-	// free allocated memory
+	// if root of tree has been deleted
+	if (t == NULL)
+	{
+		return NULL;
+	}
+	// else delete sub-trees
+	delTree(t -> left);
+	delTree(t -> right);
+	// free the treeNode
 	free(t);
-	return;
+	return t;
 }
 
 // Dump a Huffman tree onto a file
