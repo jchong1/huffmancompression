@@ -11,11 +11,10 @@ typedef struct DAH treeNode;
 
 struct DAH
 {
-	uint8_t uint64_t bool treeNode
-	symbol;
-	count;
-	leaf;
-	*left, *right;
+	uint8_t  symbol;
+	uint64_t count;
+	bool     leaf;
+	treeNode *left, *right;
 }; 
 
 // New node, with symbols, leaf or not, a count associated with it
