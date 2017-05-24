@@ -64,3 +64,18 @@ treeNode *join(treeNode *l, treeNode *r)
 {
 	// code
 }
+
+int main() // main to test huffman code
+{
+    treeNode *root 			= newNode(1); 
+    root -> left            = newNode(2);
+    root -> right          	= newNode(3);
+    root -> left -> left    = newNode(4);
+    root -> left -> right   = newNode(5); 
+   
+    deleteTree(root);  
+    root = NULL;
+ 
+    printf("\n Tree deleted ");
+    return 0;
+}
