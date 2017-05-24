@@ -3,7 +3,7 @@
 # include <stdint.h>
 # include <stdbool.h>
 
-typedef uint32_t item; You will need to change this
+typedef uint32_t item; //You will need to change this
 
 typedef struct stack
 {
