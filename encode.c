@@ -1,5 +1,5 @@
 int main()
 {
-	printf("encode the darrell long dong :^)");
+	printf("encode the darrell long dong");
 	return 0;
 }
