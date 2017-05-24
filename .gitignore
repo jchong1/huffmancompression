@@ -1,0 +1,9 @@
+*.o
+*~
+*.bak
+*.zip
+*.jar
+*.class
+a.out
+.DS_Store
+*.dYSM
