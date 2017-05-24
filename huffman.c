@@ -4,6 +4,7 @@
 # include <stdbool.h>
 
 # include "huffman.h"
+# include "code.h"
 
 // New node, with symbols, leaf or not, a count associated with it
 treeNode *newNode(uint8_t s, bool l, uint64_t c)
@@ -59,7 +60,17 @@ void buildCode(treeNode *t, code s, code table[256])
 // Join two subtrees
 treeNode *join(treeNode *l, treeNode *r)
 {
-	// code
+	// get sum of child node counts
+	uint64_t parentCount = (l -> count) + (r -> count);
+	// create symbol code using push?
+	uint8_t symbol = 
+	// is parent node a leaf?
+	bool leaf = 
+	// create new node
+	treeNode *parentNode = newNode(symbol, leaf, parentCount);
+	// return created node
+	return parentNode;
+
 }
 
 int main() // main to test huffman code
