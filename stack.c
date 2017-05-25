@@ -66,3 +66,22 @@ bool full(stack *)
 {
 	return s -> top == 1;
 }	
+
+int main(void) // to test stack functions
+{
+    uint32_t toPush;
+    stack *s = newStack();
+    do
+    {
+        printf("How many? "); scanf("%u", &toPush);
+        for (uint32_t i = 0; i < toPush; i += 1)
+        {
+            push(s, i);
+        }
+        while (!empty(s))
+        {
+            printf("%lu\n", (uint32_t) pop(s));
+        }
+    } while (toPush != 0);
+    return 0;
+}
