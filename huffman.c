@@ -62,10 +62,10 @@ treeNode *join(treeNode *l, treeNode *r)
 {
 	// get sum of child node counts
 	uint64_t parentCount = (l -> count) + (r -> count);
-	// create symbol code using push?
-	uint8_t symbol = 
-	// is parent node a leaf?
-	bool leaf = 
+	// internal node symbol is $
+	uint8_t symbol = $;
+	// is parent node isn't a leaf
+	bool leaf = false;
 	// create new node
 	treeNode *parentNode = newNode(symbol, leaf, parentCount);
 	// return created node
