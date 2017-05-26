@@ -38,21 +38,43 @@ bool full(queue *q)
 	return ((q -> head + 1) % q -> size) == (q -> tail % q -> size);
 }
 
-
+// Enqueue should put the items from biggest -> smallest, head points at biggest
 bool enqueue(queue *q, item i)
 {
 	if (full(q))
 	{
 		return false;
 	}
-	else
+	else if (empty(q))
 	{
 		q->Q[q->head] = i;
-		q->head = (q->head + 1) % q->size;
+		q->head = 1;
 		return true;
+	}
+	else
+	{
+		for (uint32_t i = 0; i < sizeof(q->Q); i++)
+		{
+			treeNode current = q->Q[i];
+			// Compare count to see if you want to insert item at the current index
+			if (item->count < current->count)
+			{
+				// shift elements to the right of the index to the right
+				for (uint32_t k = i + 1; k < sizeof(q->Q); k++)
+				{
+					q->Q[k + 1] = q->Q[k];
+				}
+				// insert the item into the array
+				q->Q[i] = i;
+				q->head = (q->head + 1) % q->size;
+				return true;
+			}
+
+		}
 	}
 }
 
+// Dequeue should return the SMALLEST item
 bool dequeue(queue *q, item *i)
 {
 	if (empty(q))

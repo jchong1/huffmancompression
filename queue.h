@@ -6,6 +6,7 @@
 # include "huffman.h"
 
 typedef treeNode item; // treeNode defined in huffman.h 
+
 typedef struct queue
 {
 	uint32_t size; 		 // How big is it?
