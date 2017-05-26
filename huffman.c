@@ -36,7 +36,9 @@ treeNode *delTree(treeNode *t)
 // Dump a Huffman tree onto a file
 void dumpTree(treeNode *t, int file)
 {
-	// code
+	// use reverse polish notation
+
+	// 
 }
 
 // Build a tree from the saved tree
@@ -46,7 +48,7 @@ treeNode *loadTree(uint8_t savedTree[])
 }
 
 // Step through a tree following the code
-int32_t *stepTree(treeNode *root, treeNode *t, uint32_t code)
+uint32_t *stepTree(treeNode *root, treeNode *t, uint32_t code)
 {
 	// code
 }
