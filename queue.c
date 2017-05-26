@@ -1,8 +1,13 @@
-# include <stdint.h>
-# include <stdbool.h>
+# include <stdio.h>
+# include <stdlib.h>
+# include <time.h>
 
 # include "queue.h"
 # include "huffman.h"
+
+# ifndef MAX
+# define MAX 10
+# endif
 
 // Code given by DDELL
 
@@ -61,3 +66,51 @@ bool dequeue(queue *q, item *i)
 		return true;
 	}
 }
+
+int main(void)
+{
+        uint32_t count = 0;
+        queue   *q     = newQueue(2 * MAX);
+
+        srandom((long) time((time_t *) 0));
+        do
+        {
+                uint32_t add = random() % MAX;
+
+                printf("Adding %u elements\n", add);
+                for (uint32_t i = 0; i < add; i += 1)
+                {
+                        if (full(q))
+                        {
+                                printf("Ouch! Full with only %u!\n", i);
+                                break;
+                        }
+                        else
+                        {
+                                item x = random() % 1000;
+                                printf("\t%4u\n", x);
+                                (void) enqueue(q, x);
+                                count += 1;
+                        }
+                }
+
+                uint32_t pop = random() % MAX;
+
+                printf("Popping %u elements\n", pop);
+                for (uint32_t i = 0; i < pop; i += 1)
+                {
+                        if (empty(q))
+                        {
+                                printf("Woah! Empty after only %u!\n", i);
+                                break;
+                        }
+                        else
+                        {
+                                item x;
+                                (void) dequeue(q, &x);
+                                printf("\t%4u\n", x);
+                        }
+                }
+        } while (!empty(q));
+}
+
