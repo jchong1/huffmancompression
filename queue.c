@@ -30,7 +30,7 @@ bool empty(queue *q)
 
 bool full(queue *q)
 {
-	return (q -> head + 1) % q -> size == q -> tail % q -> size;
+	return ((q -> head + 1) % q -> size) == (q -> tail % q -> size);
 }
 
 
