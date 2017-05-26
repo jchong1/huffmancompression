@@ -64,7 +64,7 @@ bool empty(stack *)
 // It it full?	
 bool full(stack *)
 {
-	return s -> top == 1;
+	return s -> top == STACK_SIZE;
 }	
 
 int main(void) // to test stack functions
