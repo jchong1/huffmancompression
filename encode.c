@@ -57,7 +57,7 @@ void constructCode(treeNode *node)
 {
 	// below is pseudocode
 	// should use a stack somewhere
-	if (node -> l) // if node is a leaf
+	if (node->leaf) // if node is a leaf
 	{
 		record in array
 	}
