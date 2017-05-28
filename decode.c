@@ -1,6 +1,38 @@
-int main()
+# include <stdio.h>
+# include <stdint.h>
+# include <unistd.h>
+# include <stdbool.h>
+
+# define OPTIONS "i:o:v"
+# define MAGIC 0xdeadd00d
+
+int main(int argc, char *argv[])
 {
-	printf("decode the darrell long dong :^)");
+	int d;
+	char *outFile, *inFile;
+
+	while (d = getopt(argc, argv, OPTIONS) != -1)
+	{
+		switch (d)
+		{
+			case i:
+			{
+				inFile = optarg;
+				break;
+			}
+			case o:
+			{
+				outFile = optarg;
+				break;
+			}
+			case v:
+			{
+				// verbose option
+				break;
+			}
+		}
+	}
+
 
 	// Read in magic number
 

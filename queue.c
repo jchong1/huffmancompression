@@ -38,7 +38,7 @@ bool full(queue *q)
 	return ((q -> head + 1) % q -> size) == (q -> tail % q -> size);
 }
 
-// Enqueue should put the items from biggest -> smallest, head points at biggest
+// Enqueue should put the items from biggest -> smallest, head points at biggest element
 bool enqueue(queue *q, item i)
 {
 	if (full(q))

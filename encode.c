@@ -25,7 +25,7 @@ uint32_t *loadHistogram(char *file)
 {
 	uint8_t c = 0; // keeps track of ascii character index
 	uint32_t *hist = calloc(256, sizeof(uint32_t));
-	if (hist)
+	if (hist) // check if calloc allocated space correctly
 	{
 		FILE *fp = fopen(file, "r"); // open file
 		if (fp == NULL)
