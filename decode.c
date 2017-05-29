@@ -17,11 +17,13 @@ int main(int argc, char *argv[])
 		{
 			case i:
 			{
+				// file being read from
 				inFile = optarg;
 				break;
 			}
 			case o:
 			{
+				// file being written to (default stdout)
 				outFile = optarg;
 				break;
 			}

@@ -46,9 +46,20 @@ treeNode *loadTree(uint8_t savedTree[])
 }
 
 // Step through a tree following the code
-uint32_t *stepTree(treeNode *root, treeNode *t, uint32_t code)
+uint32_t *stepTree(treeNode *root, treeNode **t, uint32_t code)
 {
 	// code
+	for (uint32_t i = 0; i < code->l; i++)
+	{
+		if (code->bits[i] == 0 && !root->leaf)
+		{
+			stepTree(root->left, t, code);
+		}
+		else if (code->bits[i] == 1 && !root->leaf)
+		{
+			stepTree(root->right, t, code);
+		}
+	}
 }
 
 // Parse a Huffman tree to build codes
@@ -63,14 +74,13 @@ treeNode *join(treeNode *l, treeNode *r)
 	// get sum of child node counts
 	uint64_t parentCount = (l -> count) + (r -> count);
 	// internal node symbol is $
-	uint8_t symbol = $;
+	uint8_t symbol = '$';
 	// is parent node isn't a leaf
 	bool leaf = false;
 	// create new node
 	treeNode *parentNode = newNode(symbol, leaf, parentCount);
 	// return created node
 	return parentNode;
-
 }
 
 int main() // main to test huffman code
