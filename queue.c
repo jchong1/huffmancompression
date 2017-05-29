@@ -4,6 +4,7 @@
 
 # include "queue.h"
 # include "huffman.h"
+# include "code.h"
 
 # ifndef MAX
 # define MAX 10
@@ -36,10 +37,11 @@ bool empty(queue *q)
 bool full(queue *q)
 {
 	return ((q -> head + 1) % q -> size) == (q -> tail % q -> size);
+	// return (q->head + 1 == q->size);
 }
 
 // Enqueue should put the items from biggest -> smallest, head points at biggest element
-bool enqueue(queue *q, item i)
+bool enqueue(queue *q, item item)
 {
 	if (full(q))
 	{
@@ -47,29 +49,37 @@ bool enqueue(queue *q, item i)
 	}
 	else if (empty(q))
 	{
-		q->Q[q->head] = i;
+		q->Q[0] = item;
 		q->head = 1;
+		q->tail = 0;
 		return true;
 	}
 	else
 	{
-		for (uint32_t i = 0; i < sizeof(q->Q); i++)
+		for (uint32_t i = q->tail; i <= q->head; i++)
 		{
-			treeNode current = q->Q[i];
+			uint32_t current = q->Q[i];
 			// Compare count to see if you want to insert item at the current index
-			if (item->count < current->count)
+			if (item <= current)
 			{
 				// shift elements to the right of the index to the right
-				for (uint32_t k = i + 1; k < sizeof(q->Q); k++)
+				// still need to figure out how to shift the elements
+
+				for (uint32_t k = q->head + 1; k > i; k--)
 				{
-					q->Q[k + 1] = q->Q[k];
+					q->Q[k] = q->Q[k - 1];
 				}
 				// insert the item into the array
-				q->Q[i] = i;
+				q->Q[i] = item;
 				q->head = (q->head + 1) % q->size;
 				return true;
 			}
-
+			else
+			{
+				q->Q[q->head] = item;
+				q->head = (q->head + 1) % q->size;
+				return true;
+			}
 		}
 	}
 }
@@ -91,48 +101,59 @@ bool dequeue(queue *q, item *i)
 
 int main(void)
 {
-        uint32_t count = 0;
-        queue   *q     = newQueue(2 * MAX);
+    uint32_t count = 0;
+    queue   *q     = newQueue(2 * MAX);
 
-        srandom((long) time((time_t *) 0));
-        do
+    srandom((long) time((time_t *) 0));
+    do
+    {
+        uint32_t add = random() % MAX;
+
+        printf("Adding %u elements\n", add);
+        for (uint32_t i = 0; i < add; i += 1)
         {
-                uint32_t add = random() % MAX;
+            if (full(q))
+            {
+                printf("Ouch! Full with only %u!\n", i);
+                break;
+            }
+            else
+            {
+                item x = random() % 1000;
+                printf("\t%4u\n", x);
+                (void) enqueue(q, x);
+                
+                count += 1;
+            }
+        }
+		for (item i = q->tail; i < q->size; i++)
+        {
+        	printf("%d ", q->Q[i]);
+        }
+        printf("\n");
+        uint32_t pop = random() % MAX;
 
-                printf("Adding %u elements\n", add);
-                for (uint32_t i = 0; i < add; i += 1)
-                {
-                        if (full(q))
-                        {
-                                printf("Ouch! Full with only %u!\n", i);
-                                break;
-                        }
-                        else
-                        {
-                                item x = random() % 1000;
-                                printf("\t%4u\n", x);
-                                (void) enqueue(q, x);
-                                count += 1;
-                        }
-                }
+        printf("Popping %u elements\n", pop);
+        for (uint32_t i = 0; i < pop; i += 1)
+        {
+            if (empty(q))
+            {
+                    printf("Woah! Empty after only %u!\n", i);
+                    break;
+            }
+            else
+            {
+                item x;
+                (void) dequeue(q, &x);
+                printf("\t%4u\n", x);
 
-                uint32_t pop = random() % MAX;
-
-                printf("Popping %u elements\n", pop);
-                for (uint32_t i = 0; i < pop; i += 1)
-                {
-                        if (empty(q))
-                        {
-                                printf("Woah! Empty after only %u!\n", i);
-                                break;
-                        }
-                        else
-                        {
-                                item x;
-                                (void) dequeue(q, &x);
-                                printf("\t%4u\n", x);
-                        }
-                }
-        } while (!empty(q));
+            }
+        }
+        for (item i = q->tail; i < q->size; i++)
+        {
+        	printf("%d ", q->Q[i]);
+        }
+        printf("\n");
+    } while (!empty(q));
 }
 

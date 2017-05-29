@@ -5,13 +5,13 @@
 
 # include "huffman.h"
 
-typedef treeNode item; // treeNode defined in huffman.h 
+typedef uint32_t item; // treeNode defined in huffman.h 
 
 typedef struct queue
 {
 	uint32_t size; 		 // How big is it?
 	uint32_t head, tail; // Front and rear locations
-	item *Q; 			 // Array to hold it (via calloc)
+	item *Q; 			 // Array to hold items (via calloc)
 } queue;
 
 queue *newQueue(uint32_t); 		// Constructor

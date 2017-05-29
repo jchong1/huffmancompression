@@ -3,6 +3,8 @@
 # include <stdint.h>
 # include <stdbool.h>
 
+# include "code.h"
+
 # ifndef NIL
 # define NIL (void *) 0
 # endif
@@ -21,7 +23,7 @@ struct DAH
 treeNode *newNode(uint8_t , bool , uint64_t );
 
 // Delete a single node
-treeNode *delNode(treeNode *);
+// treeNode *delNode(treeNode *);
 
 // Delete a tree
 treeNode *delTree(treeNode *);

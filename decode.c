@@ -9,7 +9,7 @@
 int main(int argc, char *argv[])
 {
 	int d;
-	char *outFile, *inFile;
+	char *outFile = NULL, *inFile = stdout;
 
 	while (d = getopt(argc, argv, OPTIONS) != -1)
 	{
@@ -32,6 +32,16 @@ int main(int argc, char *argv[])
 			}
 		}
 	}
+
+	// throw an error, need a file to decode
+	if (inFile == NULL)
+	{
+		printf("Must have an input file.");
+		exit(1);
+	}
+
+	FILE *inFP = fopen(inFile, "r");
+	
 
 
 	// Read in magic number

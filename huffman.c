@@ -37,8 +37,6 @@ treeNode *delTree(treeNode *t)
 void dumpTree(treeNode *t, int file)
 {
 	// use reverse polish notation
-
-	// 
 }
 
 // Build a tree from the saved tree
