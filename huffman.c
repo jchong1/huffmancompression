@@ -56,7 +56,22 @@ uint32_t *stepTree(treeNode *root, treeNode *t, uint32_t code)
 // Parse a Huffman tree to build codes
 void buildCode(treeNode *t, code s, code table[256])
 {
-	// code
+	// below is pseudocode
+	// should use a stack to store code
+	if (node->leaf) // if node is a leaf
+	{
+		record in stack
+	}
+	else
+	{
+		push 0
+		constructCode(node->left);
+		pop
+		push 1
+		constructCode(node->right);
+		pop
+	}
+	return;
 }
 
 // Join two subtrees
