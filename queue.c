@@ -67,21 +67,18 @@ bool enqueue(queue *q, item item)
 
 				for (uint32_t k = q->head + 1; k > i; k--)
 				{
-					q->Q[k] = q->Q[k - 1];
+					q->Q[k % q->size] = q->Q[(k - 1) % q->size];
 				}
 				// insert the item into the array
 				q->Q[i] = item;
 				q->head = (q->head + 1) % q->size;
 				return true;
 			}
-			else
-			{
-				q->Q[q->head] = item;
-				q->head = (q->head + 1) % q->size;
-				return true;
-			}
 		}
 	}
+	q->Q[q->head] = item;
+	q->head = q->head + 1 % q->size;
+	return true;
 }
 
 // Dequeue should return the SMALLEST item
