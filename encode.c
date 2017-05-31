@@ -52,8 +52,3 @@ uint32_t *loadHistogram(char *file)
 	}
 	return hist;
 }
-
-void constructCode(treeNode *node)
-{
-	
-}
