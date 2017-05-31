@@ -13,7 +13,7 @@ typedef struct stack
 } stack;
 
 stack *newStack();			// Constructor
-voic delStack(stack *);		// Deconstructor
+void delStack(stack *);		// Deconstructor
 
 item pop (stack *);			// Returns the top item
 void push(stack *, item);	// Adds an item to the top

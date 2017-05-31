@@ -21,7 +21,7 @@ stack *newStack()
 }	
 
 // Deconstructor		
-voic delStack(stack *)
+void delStack(stack *s)
 {
 	free(s -> entries); 
 	free(s);
@@ -29,7 +29,7 @@ voic delStack(stack *)
 }	
 
 // Return the top item
-item pop (stack *)
+item pop(stack *s)
 {
 	if (s -> top > 0)
     {
@@ -43,7 +43,7 @@ item pop (stack *)
 }	
 
 // Add an item to the top	
-void push(stack *, item)
+void push(stack *s, item i)
 {
 	if (s -> top == s -> size)
     {
@@ -56,13 +56,13 @@ void push(stack *, item)
 }	
 
 // Is it empty?
-bool empty(stack *)
+bool empty(stack *s)
 {
 	return s -> top == 0;
 }
 
 // It it full?	
-bool full(stack *)
+bool full(stack *s)
 {
 	return s -> top == STACK_SIZE;
 }	
@@ -80,7 +80,7 @@ int main(void) // to test stack functions
         }
         while (!empty(s))
         {
-            printf("%lu\n", (uint32_t) pop(s));
+            printf("%u\n", (uint32_t) pop(s));
         }
     } while (toPush != 0);
     return 0;
