@@ -47,17 +47,17 @@ uint32_t *stepTree(treeNode *root, treeNode **t, uint32_t code)
 			stepTree(root->right, t, code);
 		}
 	}
+	// have to return something
 }
 
 // Parse a Huffman tree to build codes
 void buildCode(treeNode *t, code s, code table[256])
 {
-	// below is pseudocode
-	// should use a stack somewhere
+	uint32_t index = 0; 
 	if (node->leaf) // if node is a leaf (base case)
 	{
-		// record in stack
-		for (uint32_t i = 0; i < )
+		// record stack in code table
+		table[index++]->bits = s;
 	}
 	else
 	{
