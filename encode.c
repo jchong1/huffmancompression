@@ -55,19 +55,5 @@ uint32_t *loadHistogram(char *file)
 
 void constructCode(treeNode *node)
 {
-	// below is pseudocode
-	// should use a stack somewhere
-	if (node->leaf) // if node is a leaf
-	{
-		record in array
-	}
-	else
-	{
-		push 0
-		constructCode(node->left);
-		push 1
-		constructCode(node->right);
-	}
-	pop
-	return;
+	
 }
