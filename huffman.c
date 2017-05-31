@@ -57,20 +57,19 @@ uint32_t *stepTree(treeNode *root, treeNode *t, uint32_t code)
 void buildCode(treeNode *t, code s, code table[256])
 {
 	// below is pseudocode
-	// should use a stack to store code
+	// should use a stack somewhere
 	if (node->leaf) // if node is a leaf
 	{
-		record in stack
+		record in array
 	}
 	else
 	{
 		push 0
 		constructCode(node->left);
-		pop
 		push 1
 		constructCode(node->right);
-		pop
 	}
+	pop
 	return;
 }
 
