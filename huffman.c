@@ -56,7 +56,7 @@ void buildCode(treeNode *t, code s, code table[256])
 	uint32_t index = 0; 
 	if (node->leaf) // if node is a leaf (base case)
 	{
-		// record stack in code table
+		// record current stack in code table
 		table[index++]->bits = s;
 	}
 	else
