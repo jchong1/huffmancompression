@@ -20,19 +20,6 @@ treeNode *newNode(uint8_t s, bool l, uint64_t c)
 	return node;
 }
 
-// Delete a tree
-treeNode *delTree(treeNode *t)
-{
-	// while root of tree hasn't been deleted
-	if (t != NULL)
-	{
-		delTree(t -> left);
-		delTree(t -> right);
-		free(t);
-	}
-	return NULL;
-}
-
 // Dump a Huffman tree onto a file
 void dumpTree(treeNode *t, int file)
 {
@@ -40,7 +27,7 @@ void dumpTree(treeNode *t, int file)
 }
 
 // Build a tree from the saved tree
-treeNode *loadTree(uint8_t savedTree[])
+treeNode *loadTree(uint8_t savedTree[], uint16_t treeBytes)
 {
 	// code
 }
@@ -67,19 +54,34 @@ void buildCode(treeNode *t, code s, code table[256])
 {
 	// below is pseudocode
 	// should use a stack somewhere
-	if (node->leaf) // if node is a leaf
+	if (node->leaf) // if node is a leaf (base case)
 	{
-		record in array
+		// record in stack
+		for (uint32_t i = 0; i < )
 	}
 	else
 	{
-		push 0
+		pushCode(s, 0);
 		constructCode(node->left);
-		push 1
+		popCode(s, table);
+		pushCode(s, 1);
 		constructCode(node->right);
+		popCode(s, table);
 	}
-	pop
 	return;
+}
+
+// Delete a tree
+treeNode *delTree(treeNode *t)
+{
+	// while root of tree hasn't been deleted
+	if (t != NULL)
+	{
+		delTree(t -> left);
+		delTree(t -> right);
+		free(t);
+	}
+	return NULL;
 }
 
 // Join two subtrees

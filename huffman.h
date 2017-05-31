@@ -20,25 +20,22 @@ struct DAH
 }; 
 
 // New node, with symbols, leaf or not, a count associated with it
-treeNode *newNode(uint8_t , bool , uint64_t );
-
-// Delete a single node
-// treeNode *delNode(treeNode *);
-
-// Delete a tree
-treeNode *delTree(treeNode *);
+treeNode *newNode(uint8_t , bool , uint64_t);
 
 // Dump a Huffman tree onto a file
 void dumpTree(treeNode *, int);
 
 // Build a tree from the saved tree
-treeNode *loadTree(uint8_t);
+treeNode *loadTree(uint8_t, uint16_t);
 
 // Step through a tree following the code
-int32_t *stepTree(treeNode *, treeNode **, uint32_t);
+uint32_t *stepTree(treeNode *, treeNode **, uint32_t);
 
 // Parse a Huffman tree to build codes
 void buildCode(treeNode *, code, code);
+
+// Delete a tree
+treeNode *delTree(treeNode *);
 
 static inline void delNode(treeNode *h) { free(h); return; }
 
