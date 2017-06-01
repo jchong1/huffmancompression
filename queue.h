@@ -5,7 +5,7 @@
 
 # include "huffman.h"
 
-typedef uint32_t item; // treeNode defined in huffman.h 
+typedef treeNode item; // treeNode defined in huffman.h 
 
 typedef struct queue
 {
@@ -13,13 +13,13 @@ typedef struct queue
 	item item; 		 // Array to hold items (via calloc)
 } queue;
 
-queue *newQueue(uint32_t); 		// Constructor
-void delQueue(queue *); 		// Deconstructor
+queue *newLink(item); 		// Constructor
+void delQueue(queue **); 		// Deconstructor
 
 bool empty(queue **);	// Is it empty?
-bool full (queue **);	// Is it full?
+bool full(queue ** );	// Is it full?
 
-bool enqueue(queue **, item ); // Add an item
+bool enqueue(queue **, item  ); // Add an item
 bool dequeue(queue **, item *); // Remove from the rear 
 
 # endif

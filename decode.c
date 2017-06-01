@@ -9,8 +9,10 @@
 int main(int argc, char *argv[])
 {
 	int d;
-	char *outFile = NULL, *inFile = stdout;
+	char *sFile = NULL, *oFile = stdout;
 	uint32_t magicNum;
+	uint64_t oFileSize;
+	uint8_t treeSize;
 
 	while (d = getopt(argc, argv, OPTIONS) != -1)
 	{
@@ -19,13 +21,13 @@ int main(int argc, char *argv[])
 			case i:
 			{
 				// file being read from
-				inFile = optarg;
+				sFile = strdup(optarg);
 				break;
 			}
 			case o:
 			{
 				// file being written to (default stdout)
-				outFile = optarg;
+				oFile = strdup(optarg);
 				break;
 			}
 			case v:
@@ -37,28 +39,36 @@ int main(int argc, char *argv[])
 	}
 
 	// throw an error, need a file to decode
-	if (inFile == NULL)
+	if (sFile == NULL)
 	{
 		printf("Must have an input file.");
 		exit(1);
 	}
 
-	FILE *inFP = fopen(inFile, "r");
-
-	readf(inFP, )
-
+	FILE *sFP = fopen(sFile, "r");
+	FILE *oFP = fopen(oFile, "w");
 
 	// Read in magic number
+	fread(magicNum, sizeof(magicNum), sFP);
 
 	// If magic number doesn't match 0xdeadd00d, display error message and quit.
-
+	if (magicNum != MAGIC)
+	{
+		printf("File compressed incorrectly, exiting...");
+		exit(1);
+	}
+	
 	// Read next 8 bytes of the sFile to get exact size of oFile
+	fread(oFileSize, sizeof(oFileSize), sFP);
 
 	// Read next 2 bytes of sFile and call it treeSize
+	fread(treeSize, sizeof(treeSize), sFP);
 
 	// Allocate an array(savedTree) of uint8_t’s which is treeSize long
+	uint8_t savedTree = calloc(treeSize, sizeof(uint8_t));
 
 	// Read in the sFile for treeSize bytes into savedTree
+	fread(savedTree, treeSize, sFP);
 
 	// use previously mentioned array to reconstruct your Huffman tree using loadTree (use a stack)
 

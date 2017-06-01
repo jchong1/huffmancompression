@@ -12,7 +12,7 @@
 
 // Code given by DDELL
 
-queue *newNode(item item)
+queue *newLink(item item)
 {
 	queue *q = (queue *) malloc(sizeof(queue));
 	q->next = NULL;
@@ -41,12 +41,12 @@ bool empty(queue **head)
 
 bool full(queue *q)
 {
+	// Never full because linked lists are unbounded
 	return false;
-	// return (q->head + 1 == q->size);
 }
 
-// Enqueue should put the items from biggest -> smallest, head points at biggest element
-bool enqueue(queue **q, item item)
+// Enqueue should put the items from smallest -> biggest, head points at smallest element
+bool enqueue(queue **head, item item)
 {
 	if (full(q))
 	{
@@ -54,12 +54,16 @@ bool enqueue(queue **q, item item)
 	}
 	queue *current = *head;
 	queue *nextNode;
+
 	while (current != NULL)
 	{
 		nextNode = current->next;
-		if (item > current->item)
+		// If item trying to insert greater than the current node
+		if (item->count > current->item->count)
 		{
+			// Insert the item
 			current->next = newNode(item);
+			// Link the inserted item to the next node in the list
 			current->next->next = nextNode;
 		}
 	}
@@ -67,7 +71,7 @@ bool enqueue(queue **q, item item)
 }
 
 // Dequeue should return the SMALLEST item
-bool dequeue(queue **head, item *i)
+bool dequeue(queue **head, item *item)
 {
 	if (empty(q))
 	{
@@ -75,7 +79,7 @@ bool dequeue(queue **head, item *i)
 	}
 	else
 	{
-		*i = *head->item;
+		*item = *head->item;
 		*head = *head->next;
 		return true;
 	}
@@ -83,59 +87,9 @@ bool dequeue(queue **head, item *i)
 
 int main(void)
 {
-    uint32_t count = 0;
-    queue   *q     = newQueue(2 * MAX);
+	queue **head = malloc(sizeof(queue *));
 
-    srandom((long) time((time_t *) 0));
-    do
-    {
-        uint32_t add = random() % MAX;
 
-        printf("Adding %u elements\n", add);
-        for (uint32_t i = 0; i < add; i += 1)
-        {
-            if (full(q))
-            {
-                printf("Ouch! Full with only %u!\n", i);
-                break;
-            }
-            else
-            {
-                item x = random() % 1000;
-                printf("\t%4u\n", x);
-                (void) enqueue(q, x);
-                
-                count += 1;
-            }
-        }
-		for (item i = q->tail; i < q->size; i++)
-        {
-        	printf("%d ", q->Q[i]);
-        }
-        printf("\n");
-        uint32_t pop = random() % MAX;
-
-        printf("Popping %u elements\n", pop);
-        for (uint32_t i = 0; i < pop; i += 1)
-        {
-            if (empty(q))
-            {
-                    printf("Woah! Empty after only %u!\n", i);
-                    break;
-            }
-            else
-            {
-                item x;
-                (void) dequeue(q, &x);
-                printf("\t%4u\n", x);
-
-            }
-        }
-        for (item i = q->tail; i < q->size; i++)
-        {
-        	printf("%d ", q->Q[i]);
-        }
-        printf("\n");
-    } while (!empty(q));
+	return 0;
 }
 

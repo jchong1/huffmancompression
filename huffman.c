@@ -23,7 +23,7 @@ treeNode *newNode(uint8_t s, bool l, uint64_t c)
 // Dump a Huffman tree onto a file
 void dumpTree(treeNode *t, int file)
 {
-	// use reverse polish notation
+	
 }
 
 // Build a tree from the saved tree
