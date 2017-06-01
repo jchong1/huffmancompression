@@ -9,20 +9,6 @@
 
 // Code given by DDELL
 
-// // Constructor
-// treeNode *newNode(uint8_t s, bool l, uint64_t c)
-// {
-//     // allocate space for a treeNode
-//     treeNode *node = (treeNode *) malloc(sizeof(treeNode));
-//     // set members of struct treeNode
-//     node -> symbol = s;
-//     node -> leaf = l;
-//     node -> count = c;
-//     node -> right = NULL;
-//     node -> left = NULL;
-//     return node;
-// }
-
 // Constructor
 treestack *newTreeStack()
 {
@@ -79,25 +65,3 @@ bool fullTree(treestack *s)
 {
 	return s -> top == TREESTACK_SIZE;
 }	
-
-// int main(void) // to test treestack functions
-// {
-//     uint32_t toPush;
-//     treestack *s = newTreeStack();
-//     do
-//     {
-//         printf("How many? "); scanf("%u", &toPush);
-//         for (uint32_t i = 0; i < toPush; i += 1)
-//         {
-//             treeNode *testNode = newNode('$', false, i);
-//             pushTree(s, *testNode);
-//             delNode(testNode);
-//         }
-//         while (!emptyTree(s))
-//         {
-//             printf("%llu\n", popTree(s).count);
-//         }
-//     } while (toPush != 0);
-//     delTreeStack(s);
-//     return 0;
-// }
