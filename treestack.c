@@ -27,7 +27,7 @@
 treestack *newTreeStack()
 {
 	treestack *s = (treestack *) calloc(TREESTACK_SIZE, sizeof(treestack));
-    s -> size = STACK_SIZE;
+    s -> size = TREESTACK_SIZE;
     s -> top  = 0;
     s -> entries = (treeitem *) calloc(TREESTACK_SIZE, sizeof(treeitem));
     return s;

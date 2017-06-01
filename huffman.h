@@ -23,19 +23,21 @@ typedef struct BUFFER buf;
 
 struct BUFFER
 {
-	char arr[768];
+	char *arr;
 	int pos;
 };
 
 // New node, with symbols, leaf or not, a count associated with it
 treeNode *newNode(uint8_t , bool , uint64_t);
 
-// // Dump a Huffman tree onto a file
-// void dumpTree(treeNode *, int);
+// New buffer
+buf *newBuffer();
 
-// // Helper function for dumpTree
-// // Pseudocode given by Arjun
-// int dumpTreeHelp(struct buf *, treeNode *)
+// Dump a Huffman tree onto a file
+void dumpTree(treeNode *, int);
+
+// Helper function for dumpTree (pseudocode given by Arjun)
+int dumpTreeHelp(buf *, treeNode *);
 
 // Build a tree from the saved tree
 treeNode *loadTree(uint8_t *, uint16_t);
