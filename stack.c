@@ -6,7 +6,7 @@
 # include "stack.h"
 
 # define INVALID 0xDeadD00d
-# define STACK_SIZE 10
+# define STACK_SIZE 256
 
 // Code given by DDELL
 

@@ -19,20 +19,34 @@ struct DAH
 	treeNode *left, *right;
 }; 
 
+typedef struct BUFFER buf;
+
+struct BUFFER
+{
+	char *arr;
+	int pos;
+};
+
 // New node, with symbols, leaf or not, a count associated with it
 treeNode *newNode(uint8_t , bool , uint64_t);
+
+// New buffer
+buf *newBuffer();
 
 // Dump a Huffman tree onto a file
 void dumpTree(treeNode *, int);
 
+// Helper function for dumpTree (pseudocode given by Arjun)
+int dumpTreeHelp(buf *, treeNode *);
+
 // Build a tree from the saved tree
-treeNode *loadTree(uint8_t, uint16_t);
+treeNode *loadTree(uint8_t *, uint16_t);
 
 // Step through a tree following the code
-int32_t *stepTree(treeNode *, treeNode **, uint32_t);
+int32_t stepTree(treeNode *, treeNode **, uint32_t);
 
 // Parse a Huffman tree to build codes
-void buildCode(treeNode *, code, code);
+void buildCode(treeNode *, code, code *);
 
 // Delete a tree
 treeNode *delTree(treeNode *);
