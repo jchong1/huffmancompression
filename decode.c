@@ -10,6 +10,7 @@ int main(int argc, char *argv[])
 {
 	int d;
 	char *outFile = NULL, *inFile = stdout;
+	uint32_t magicNum;
 
 	while (d = getopt(argc, argv, OPTIONS) != -1)
 	{
@@ -43,7 +44,8 @@ int main(int argc, char *argv[])
 	}
 
 	FILE *inFP = fopen(inFile, "r");
-	
+
+	readf(inFP, )
 
 
 	// Read in magic number
