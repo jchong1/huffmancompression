@@ -5,7 +5,7 @@
 
 # include "treestack.h"
 
-# define STACK_SIZE 256
+# define TREESTACK_SIZE 256
 
 // Code given by DDELL
 
@@ -26,10 +26,10 @@
 // Constructor
 treestack *newTreeStack()
 {
-	treestack *s = (treestack *) calloc(STACK_SIZE, sizeof(treestack));
+	treestack *s = (treestack *) calloc(TREESTACK_SIZE, sizeof(treestack));
     s -> size = STACK_SIZE;
     s -> top  = 0;
-    s -> entries = (treeitem *) calloc(STACK_SIZE, sizeof(treeitem));
+    s -> entries = (treeitem *) calloc(TREESTACK_SIZE, sizeof(treeitem));
     return s;
 }	
 
@@ -77,7 +77,7 @@ bool emptyTree(treestack *s)
 // It it full?	
 bool fullTree(treestack *s)
 {
-	return s -> top == STACK_SIZE;
+	return s -> top == TREESTACK_SIZE;
 }	
 
 // int main(void) // to test treestack functions
