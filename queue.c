@@ -12,77 +12,62 @@
 
 // Code given by DDELL
 
-queue *newQueue(uint32_t size)
+queue *newNode(item item)
 {
 	queue *q = (queue *) malloc(sizeof(queue));
-	q -> size = size;
-	q -> head = q -> tail = 0;
-	q -> Q = (item *) calloc(size, sizeof(item));
+	q->next = NULL;
+	q->item = item;
 	return q;
 }
 
-void delQueue(queue *q)
+void delQueue(queue **head)
 {
-	free(q -> Q); 
-	free(q); 
+	queue *temp = *head;
+	queue *nextNode;
+	while (temp != NULL)
+	{
+		nextNode = temp->next;
+		free(temp);
+		temp = nextNode;
+	}
 	return;
 }
 
 // Return whether the queue is empty or full
-bool empty(queue *q)
+bool empty(queue **head)
 {
-	return q -> head == q -> tail;
+	return (*head == NULL);
 }
 
 bool full(queue *q)
 {
-	return ((q -> head + 1) % q -> size) == (q -> tail % q -> size);
+	return false;
 	// return (q->head + 1 == q->size);
 }
 
 // Enqueue should put the items from biggest -> smallest, head points at biggest element
-bool enqueue(queue *q, item item)
+bool enqueue(queue **q, item item)
 {
 	if (full(q))
 	{
 		return false;
 	}
-	else if (empty(q))
+	queue *current = *head;
+	queue *nextNode;
+	while (current != NULL)
 	{
-		q->Q[0] = item;
-		q->head = 1;
-		q->tail = 0;
-		return true;
-	}
-	else
-	{
-		for (uint32_t i = q->tail; i <= q->head; i++)
+		nextNode = current->next;
+		if (item > current->item)
 		{
-			uint32_t current = q->Q[i];
-			// Compare count to see if you want to insert item at the current index
-			if (item <= current)
-			{
-				// shift elements to the right of the index to the right
-				// still need to figure out how to shift the elements
-
-				for (uint32_t k = q->head + 1; k > i; k--)
-				{
-					q->Q[k % q->size] = q->Q[(k - 1) % q->size];
-				}
-				// insert the item into the array
-				q->Q[i] = item;
-				q->head = (q->head + 1) % q->size;
-				return true;
-			}
+			current->next = newNode(item);
+			current->next->next = nextNode;
 		}
 	}
-	q->Q[q->head] = item;
-	q->head = q->head + 1 % q->size;
 	return true;
 }
 
 // Dequeue should return the SMALLEST item
-bool dequeue(queue *q, item *i)
+bool dequeue(queue **head, item *i)
 {
 	if (empty(q))
 	{
@@ -90,8 +75,8 @@ bool dequeue(queue *q, item *i)
 	}
 	else
 	{
-		*i = q->Q[q->tail];
-		q->tail = (q->tail + 1) % q->size;
+		*i = *head->item;
+		*head = *head->next;
 		return true;
 	}
 }
