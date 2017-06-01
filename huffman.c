@@ -9,6 +9,7 @@
 # include "code.h"
 
 treeNode *newNode(uint8_t , bool , uint64_t);
+buf *newBuffer();
 treeNode *loadTree(uint8_t *, uint16_t);
 uint8_t stepTree(treeNode *, treeNode **, uint32_t);
 void buildCode(treeNode *, code, code *);
