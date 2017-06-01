@@ -10,7 +10,7 @@
 
 treeNode *newNode(uint8_t , bool , uint64_t);
 treeNode *loadTree(uint8_t *, uint16_t);
-uint8_t *stepTree(treeNode *, treeNode **, uint32_t);
+uint8_t stepTree(treeNode *, treeNode **, uint32_t);
 void buildCode(treeNode *, code, code *);
 treeNode *delTree(treeNode *);
 
@@ -23,10 +23,6 @@ int main() // main to test huffman code
 	tree[3] = 'i';
     return 0;
 }
-
-//------------------------------------------------------------------------------------------//
-//-------------------------------------ENCODING FUNCTIONS-----------------------------------//
-//------------------------------------------------------------------------------------------//
 
 // New node, with symbols, leaf or not, a count associated with it
 treeNode *newNode(uint8_t s, bool l, uint64_t c)
@@ -153,10 +149,6 @@ void printTree(treeNode *t, int depth)
 	return;
 }
 
-//------------------------------------------------------------------------------------------//
-//-------------------------------------DECODING FUNCTIONS-----------------------------------//
-//------------------------------------------------------------------------------------------//
-
 // Build a tree from the saved tree
 treeNode *loadTree(uint8_t savedTree[], uint16_t treeBytes)
 {
@@ -192,32 +184,29 @@ treeNode *loadTree(uint8_t savedTree[], uint16_t treeBytes)
 	return root;
 }
 
-// // Step through a tree following the code
-// uint8_t *stepTree(treeNode *root, treeNode **t, uint32_t code)
-// {
-// 	// If you are at a leaf node, return the symbol for that leaf node and reset state to be back at the root.
-// 	if (root->leaf) 
-// 	{
-// 		return &root->symbol;
-// 	}
-// 	// If you are at an interior node, return −1, signifying that a leaf node has not yet been reached.
-// 	else if (root->symbol == '$')
-// 	{
-// 		return (uint8_t *)-1;
-// 	}
-// 	// Else, begin at the root of Huffman tree.
-// 	else
-// 	{	 
-// 		*t = root;
-// 		// If a bit of value 0 is read, move into the left child of the tree.
-// 		if (code == 0)
-// 		{
-// 			t = t->left;
-// 		}
-// 		// If a bit of 1 is read, then move into the right child of the tree.
-// 		if (code == 1)
-// 		{
-// 			t = t->right;
-// 		}
-// 	} 
-// }
+// Step through a tree following the code
+uint8_t stepTree(treeNode *root, treeNode **t, uint32_t code)
+{
+	// If a bit of value 0 is read, move into the left child of the tree.
+	if (code == 0)
+	{
+		*t = (*t)->left;
+	}
+	// If a bit of 1 is read, then move into the right child of the tree.
+	if (code == 1)
+	{
+		*t = (*t)->right;
+	}
+	// If at a leaf node, then return the symbol for that leaf node and reset your state to be back at the root.
+	if ((*t)->leaf)
+	{
+		uint8_t s = (*t)->symbol;
+		*t = root;
+		return s;
+	}
+	// Else, you are at an interior node so return −1, to signify that a leaf node has not yet been reached.
+	else
+	{
+		return (uint8_t)-1;
+	}
+}
