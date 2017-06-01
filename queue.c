@@ -59,12 +59,17 @@ bool enqueue(queue **head, item item)
 	{
 		nextNode = current->next;
 		// If item trying to insert greater than the current node
-		if (item->count > current->item->count)
+		if (item->count >= current->item->count)
 		{
 			// Insert the item
 			current->next = newNode(item);
 			// Link the inserted item to the next node in the list
 			current->next->next = nextNode;
+		}
+		else if (nextNode == NULL)
+		{
+			current->next = newNode(item);
+			current->next->next = NULL;
 		}
 	}
 	return true;
