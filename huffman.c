@@ -11,7 +11,7 @@
 treeNode *newNode(uint8_t , bool , uint64_t);
 buf *newBuffer();
 treeNode *loadTree(uint8_t *, uint16_t);
-uint8_t stepTree(treeNode *, treeNode **, uint32_t);
+int32_t stepTree(treeNode *, treeNode **, uint32_t);
 void buildCode(treeNode *, code, code *);
 treeNode *delTree(treeNode *);
 
@@ -75,8 +75,8 @@ void buildCode(treeNode *t, code s, code table[256])
 void dumpTree(treeNode *t, int file)
 {
 	buf *b = newBuffer();
-	int n = dumpTreeHelp(b, t);
-	write(file, b, n);
+	int pos = dumpTreeHelp(b, t);
+	write(file, b, pos);
 	return;
 }
 
@@ -186,7 +186,7 @@ treeNode *loadTree(uint8_t savedTree[], uint16_t treeBytes)
 }
 
 // Step through a tree following the code
-uint8_t stepTree(treeNode *root, treeNode **t, uint32_t code)
+int32_t stepTree(treeNode *root, treeNode **t, uint32_t code)
 {
 	// If a bit of value 0 is read, move into the left child of the tree.
 	if (code == 0)
@@ -201,13 +201,13 @@ uint8_t stepTree(treeNode *root, treeNode **t, uint32_t code)
 	// If at a leaf node, then return the symbol for that leaf node and reset your state to be back at the root.
 	if ((*t)->leaf)
 	{
-		uint8_t s = (*t)->symbol;
+		int32_t s = (int32_t)(*t)->symbol;
 		*t = root;
 		return s;
 	}
 	// Else, you are at an interior node so return −1, to signify that a leaf node has not yet been reached.
 	else
 	{
-		return (uint8_t)-1;
+		return -1;
 	}
 }
