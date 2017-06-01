@@ -136,6 +136,31 @@ treeNode *join(treeNode *l, treeNode *r)
 	return parentNode;
 }
 
+void printTree(treeNode *t, int depth)
+{
+	if (t) 
+	{
+		printTree(t->left, depth + 1);
+		if (t->leaf)
+		{
+			if (isalnum(t->symbol))
+			{
+				spaces(4 * depth); printf("'%c' (%llu)\n", t->symbol, t->count);
+			}
+			else
+			{
+			spaces(4 * depth); printf("0x%X (%llu)\n", t->symbol, t->count);
+			}
+		}
+		else
+		{
+			spaces(4 * depth); printf("$ (%llu)\n", t->count);
+		}
+		printTree(t->right, depth + 1); 
+	}
+	return;
+}
+
 int main() // main to test huffman code
 {
     treeNode *root 			= newNode(1); 

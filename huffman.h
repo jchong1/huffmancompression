@@ -37,6 +37,8 @@ void buildCode(treeNode *, code, code);
 // Delete a tree
 treeNode *delTree(treeNode *);
 
+static inline void spaces(int c) { for (int i = 0; i < c; i += 1) { putchar(' '); } return; }
+
 static inline void delNode(treeNode *h) { free(h); return; }
 
 static inline bool compare(treeNode *l, treeNode *r)
