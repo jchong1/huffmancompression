@@ -58,21 +58,33 @@ treeNode *loadTree(uint8_t savedTree[], uint16_t treeBytes)
 }
 
 // Step through a tree following the code
-uint32_t *stepTree(treeNode *root, treeNode **t, uint32_t code)
+int32_t *stepTree(treeNode *root, treeNode **t, uint32_t code)
 {
-	// code
-	for (uint32_t i = 0; i < code->l; i++)
+	// If you are at a leaf node, return the symbol for that leaf node and reset state to be back at the root.
+	if (root->leaf) 
 	{
-		if (code->bits[i] == 0 && !root->leaf)
-		{
-			stepTree(root->left, t, code);
-		}
-		else if (code->bits[i] == 1 && !root->leaf)
-		{
-			stepTree(root->right, t, code);
-		}
+		return root->symbol;
 	}
-	// have to return something
+	// If you are at an interior node, return −1, signifying that a leaf node has not yet been reached.
+	else if (root->symbol == '$')
+	{
+		return -1;
+	}
+	// Else, begin at the root of Huffman tree.
+	else
+	{	 
+		*t = root;
+		// If a bit of value 0 is read, move into the left child of the tree.
+		if (code == 0)
+		{
+			stepTree(t->left, t, code);
+		}
+		// If a bit of 1 is read, then move into the right child of the tree.
+		if (code == 1)
+		{
+			stepTree(t->right, t, code);
+		}
+	} 
 }
 
 // Parse a Huffman tree to build codes
