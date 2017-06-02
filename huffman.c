@@ -15,16 +15,6 @@ int32_t stepTree(treeNode *, treeNode **, uint32_t);
 void buildCode(treeNode *, code, code *);
 treeNode *delTree(treeNode *);
 
-int main() // main to test huffman code
-{
-	uint8_t tree[4];
-	tree[0] = 'L';
-	tree[1] = 'H';
-	tree[2] = 'L';
-	tree[3] = 'i';
-    return 0;
-}
-
 // New node, with symbols, leaf or not, a count associated with it
 treeNode *newNode(uint8_t s, bool l, uint64_t c)
 {
@@ -42,14 +32,10 @@ treeNode *newNode(uint8_t s, bool l, uint64_t c)
 // New buffer
 buf *newBuffer()
 {
-<<<<<<< HEAD
-	
-=======
 	buf *b = (buf *) malloc(sizeof(buf));
 	b->arr = calloc(768, sizeof(char));
 	b->pos = 0;
 	return b;
->>>>>>> a1e77c8767b635eb6f83a09b7cfb53b0413e85f4
 }
 
 // Parse a Huffman tree to build codes

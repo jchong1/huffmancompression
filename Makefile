@@ -1,12 +1,15 @@
 CC = gcc
 CFLAGS = -Wall -Wextra -Wpedantic -Werror -g
-OBJECTS = huffman.o treestack.o
+OBJECTS = encode.o huffman.o treestack.o
 
 .PHONY: all 
-all: test
+all: encode
 
-test: $(OBJECTS)
-	$(CC) $(CFLAGS) $(OBJECTS) $(CFLAGS) -o test
+encode: $(OBJECTS)
+	$(CC) $(CFLAGS) $(OBJECTS) $(CFLAGS) -o encode
+
+encode.o: encode.c
+	$(CC) $(CFLAGS) -c encode.c
 
 huffman.o: huffman.c
 	$(CC) $(CFLAGS) -c huffman.c
@@ -16,4 +19,4 @@ treestack.o: treestack.c
 	
 .PHONY: clean 
 clean:
-	rm -f $(OBJECTS) test
+	rm -f $(OBJECTS) encode
