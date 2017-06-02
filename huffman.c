@@ -3,6 +3,7 @@
 # include <stdint.h>
 # include <stdbool.h>
 # include <unistd.h>
+# include <ctype.h>
 
 # include "huffman.h"
 # include "treestack.h"
@@ -125,7 +126,7 @@ void printTree(treeNode *t, int depth)
 		printTree(t->left, depth + 1);
 		if (t->leaf)
 		{
-			if (t->symbol)
+			if (isalnum(t->symbol))
 			{
 				spaces(4 * depth); printf("'%c' (%llu)\n", t->symbol, t->count);
 			}
