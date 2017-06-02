@@ -71,6 +71,7 @@ bool enqueue(queue **head, item item)
 			current->next = newNode(item);
 			current->next->next = NULL;
 		}
+		current = nextNode;
 	}
 	return true;
 }
