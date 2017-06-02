@@ -39,7 +39,7 @@ bool empty(queue **head)
 	return (*head == NULL);
 }
 
-bool full(queue *q)
+bool full(queue **q)
 {
 	// Never full because linked lists are unbounded
 	return false;
@@ -48,9 +48,14 @@ bool full(queue *q)
 // Enqueue should put the items from smallest -> biggest, head points at smallest element
 bool enqueue(queue **head, item item)
 {
-	if (full(q))
+	if (full(head))
 	{
 		return false;
+	}
+	if (empty(head))
+	{
+		*head = newLink(item);
+		return true;
 	}
 	queue *current = *head;
 	queue *nextNode;
@@ -94,7 +99,7 @@ bool dequeue(queue **head, item *item)
 int main(void)
 {
 	queue **head = malloc(sizeof(queue *));
-
+	
 
 	return 0;
 }
