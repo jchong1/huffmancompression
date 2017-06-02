@@ -48,6 +48,8 @@ int32_t stepTree(treeNode *, treeNode **, uint32_t);
 // Parse a Huffman tree to build codes
 void buildCode(treeNode *, code, code *);
 
+void printTree(treeNode *, int);
+
 // Delete a tree
 treeNode *delTree(treeNode *);
 

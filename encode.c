@@ -7,10 +7,13 @@
 # include <unistd.h>
 
 # include "huffman.h"
+# include "queue.h"
 
 # define OPTIONS "i:o:v"
+# define MAGIC_NUM 0xdeadd00d
 
 uint32_t *loadHistogram(char *);
+treeNode* enqueueNodes(uint32_t *);
 char *sFile = NULL,
 	 *oFile = NULL;
 
@@ -53,20 +56,21 @@ int main(int argc, char **argv)
 
 	if (iflag)
 	{
-		// 1. Compute a histogram of the file (count the number of occurrences of each byte in the file).
-		loadHistogram(sFile);
-		// 2. Construct Huffman tree that represents the histogram (use a priority queue).
+		// Makes histogram of the file then constructs a Huffman tree that represents it.
+		uint32_t *histogram = loadHistogram(sFile);
+		treeNode *head = enqueueNodes(histogram);
+		printf("printing tree!\n");
+		printTree(head, 0);
+		// Perform a post-order traversal of the Huffmantree (buildCode)
 
-		// 3. Construct code for each symbol (use a stack and perform a traversal of the Huffman tree).
+		// Write out uint32_t magic number
 
-		// 4. Emit encoding of Huffman tree to a file (perform a post-order traversal of the Huffman tree).
+		// Write length of the original file (in bytes) to oFile as a uint64_t
 
-		// 5. Emit encoding of original file to the compressed file (use bit vectors with operations append and/or concatenate).
+		// Write out the size of your tree (inbytes) to oFile as a uint16_t
 
-		// 6. Read the tree from the compressed file, in order to do this you will use a stack.
-
-		// 7. Decode the compressed bitstream into an identical copy of the original file. In order to do this, you will use
-		//    the bits (0 means left, 1 means right) to guide your traversal of a reconstructed Huffman tree.
+		// Perform a post-order traversal of the Huffman tree to write the tree to the oFile (dumpTree)
+		// and for each symbol copy the bits of the code for that symbol to the oFile.
 	}
 	else
 	{
@@ -105,4 +109,27 @@ uint32_t *loadHistogram(char *file)
   	}
   	fclose(input);
   	return histogram;
+}
+
+treeNode *enqueueNodes(uint32_t *histogram)
+{
+	queue **head = calloc(1, sizeof(queue *));
+	for (int i = 0; i < 256; i++) 
+  	{
+    	if (histogram[i] > 0) 
+    	{
+      		treeNode *temp = newNode(i, true, histogram[i]);
+      		printf("enqueueing symbol [%c]\n", i);
+      		enqueue(head, temp);
+    	}
+  	}
+  	while ((*head)->next != NULL)
+  	{
+  		printf("joining [%c] and [%c]\n",(*head)->item->symbol, (*head)->next->item->symbol);
+	  	treeNode *parent = join((*head)->item, (*head)->next->item);
+	  	dequeue(head);
+	  	dequeue(head);
+	  	enqueue(head, parent);
+	}
+  	return (*head)->item;
 }

@@ -10,16 +10,16 @@ typedef treeNode item; // treeNode defined in huffman.h
 typedef struct queue
 {
 	struct queue *next;	 // Pointer to next node	
-	item item; 		 	 // Array to hold items (via calloc)
+	item *item; 		 	 // Array to hold items (via calloc)
+	// 
 } queue;
 
-queue *newLink(item); 		// Constructor
+queue *newLink(item *); 		// Constructor
 void delQueue(queue **); 		// Deconstructor
 
 bool empty(queue **);	// Is it empty?
-bool full(queue ** );	// Is it full?
 
 bool enqueue(queue **, item *); // Add an item
-bool dequeue(queue **, item *); // Remove from the rear 
+bool dequeue(queue **); // Remove from the rear 
 
 # endif

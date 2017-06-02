@@ -14,6 +14,7 @@ treeNode *loadTree(uint8_t *, uint16_t);
 int32_t stepTree(treeNode *, treeNode **, uint32_t);
 void buildCode(treeNode *, code, code *);
 treeNode *delTree(treeNode *);
+void printTree(treeNode *, int);
 
 // New node, with symbols, leaf or not, a count associated with it
 treeNode *newNode(uint8_t s, bool l, uint64_t c)
@@ -41,11 +42,11 @@ buf *newBuffer()
 // Parse a Huffman tree to build codes
 void buildCode(treeNode *t, code s, code table[256])
 {
-	// static uint32_t index = 0; 
+	static uint32_t index = 0; 
 	if (t->leaf) // if node is a leaf (base case)
 	{
 		// record current stack in code table
-		// table[index++].bits = s;
+		table[index++] = s;
 		printf("record current stack in table!");
 	}
 	else
@@ -110,9 +111,11 @@ treeNode *join(treeNode *l, treeNode *r)
 	// is parent node isn't a leaf
 	bool leaf = false;
 	// create new node
-	treeNode *parentNode = newNode(symbol, leaf, parentCount);
+	treeNode *parent = newNode(symbol, leaf, parentCount);
+	parent->left = l;
+	parent->right = r;
 	// return created node
-	return parentNode;
+	return parent;
 }
 
 void printTree(treeNode *t, int depth)
@@ -128,7 +131,7 @@ void printTree(treeNode *t, int depth)
 			}
 			else
 			{
-			spaces(4 * depth); printf("0x%X (%llu)\n", t->symbol, t->count);
+				spaces(4 * depth); printf("0x%X (%llu)\n", t->symbol, t->count);
 			}
 		}
 		else
