@@ -57,6 +57,7 @@ uint32_t lenVec(bitV * v)
 
 void appendVec(bitV *v, code t)
 {
+	// Allocate more memory if there isn't enough space
 	if (v->position == (v->length - 1))
 	{
 		v->length += t.l;
