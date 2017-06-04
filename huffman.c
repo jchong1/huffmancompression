@@ -158,6 +158,8 @@ treeNode *loadTree(uint8_t savedTree[], uint16_t treeBytes)
 		{
 			treeNode *leafNode = newNode(savedTree[i+1], true, 0);
 			pushTree(s, *leafNode);
+			printf("Pushing leaf node with symbol: %c\n", leafNode->symbol);
+			i += 2;
 		}
 		// If the element of the array is an I, then you have encountered an interior node. 
 		// Pop once to get the right child of the interior child and then pop again to acquire the left child. 
@@ -168,9 +170,10 @@ treeNode *loadTree(uint8_t savedTree[], uint16_t treeBytes)
 			treeNode left = popTree(s);
 			treeNode *interior = join(&left, &right);
 			pushTree(s, *interior);
-			printf("Interior node count: %llu\n", (*interior).count);
+			i += 1;
+			printf("Pushing joined nodes with right: %c left: %c\n", right.symbol, left.symbol);
 		}
-		i += 2; // increment by 2
+		// i += 2; // increment by 2
 	}
 	// After you finish iterating the loop, pop one last time. 
 	// This should give you back the root of your Huffman tree.

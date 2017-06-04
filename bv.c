@@ -70,17 +70,34 @@ void appendVec(bitV *v, code t)
 		// Check the value of bit in code
 		if ((t.bits[i >> 3] >> (i & 07)) & 01)
 		{
-			// Append the bit
-			setBit(v, ++(v->position));
+			setBit(v, ++(v->position)); // append bit
 		}
 
 		else
 		{
-			// Append the bit
-			clrBit(v, ++(v->position));
+			clrBit(v, ++(v->position)); // append bit
 		}
 	}
 	return;
+}
+
+uint32_t getBit(FILE *fp)
+{
+
+	static int bp = 0; 						// points to bit in buffer
+	static uint8_t buffer[sizeof(uint8_t)]; // buffer to store a byte
+	uint8_t bit;
+	// bitV *v = newVec(numBytes * 8); 		// bit vector to store bits in
+
+	if (bp % 8 == 0) 						// read next byte
+	{
+		bp = 0;
+		fread(&buffer[0], sizeof(uint8_t), 1, fp);
+	}
+
+	bit = buffer[bp >> 3] >> (bp & 07) & 01;
+	bp++;
+	return bit;
 }
 
 // int main(void)

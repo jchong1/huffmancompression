@@ -93,8 +93,15 @@ int main(int argc, char *argv[])
 	// use previously mentioned array to reconstruct your Huffman tree using loadTree (use a stack)
 	treeNode *tree = loadTree(savedTree, treeSize);
 
-	// printTree(tree, 1);	
-	printf("\n%llu\n", (*tree).count);
+	// printTree(tree, 0);	
+	printf("%c\n", (*tree).symbol);
+
+	// fseek(sFile, SEEK_CUR, SEEK_END);
+
+	for (uint64_t i = 0; i < oFileSize * 8; i++)
+	{
+		printf("%d", getBit(sFile));
+	}
 	
 	return 0;
 }
