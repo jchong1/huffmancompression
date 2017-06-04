@@ -168,6 +168,7 @@ treeNode *loadTree(uint8_t savedTree[], uint16_t treeBytes)
 			treeNode left = popTree(s);
 			treeNode *interior = join(&left, &right);
 			pushTree(s, *interior);
+			printf("Interior node count: %llu\n", (*interior).count);
 		}
 		i += 2; // increment by 2
 	}

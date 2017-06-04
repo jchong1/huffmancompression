@@ -60,7 +60,7 @@ int main(int argc, char *argv[])
 	}
 
 	// Read in magic number
-	fread(&magicNum, sizeof(magicNum), 1, sFile);
+	fread(&magicNum, sizeof(uint8_t), 4, sFile);
 
 	// If magic number doesn't match 0xdeadd00d, display error message and quit.
 	if (magicNum != MAGIC)
@@ -70,32 +70,31 @@ int main(int argc, char *argv[])
 	}
 	
 	// Read next 8 bytes of the sFile to get exact size of oFile
-	fread(&oFileSize, sizeof(uint64_t), 1, sFile);
+	fread(&oFileSize, sizeof(uint8_t), 8, sFile);
 	printf("File size: %llu\n", oFileSize);
 
 	// Read next 2 bytes of sFile and call it treeSize
-	fread(&treeSize, sizeof(uint16_t), 1, sFile);
+	fread(&treeSize, sizeof(uint8_t), 2, sFile);
 	printf("Tree Size: %d\n", treeSize);
 
 	// Allocate an array(savedTree) of uint8_t’s which is treeSize long
 	uint8_t *savedTree = (uint8_t *) calloc(treeSize, sizeof(uint8_t));
 
 	// Read in the sFile for treeSize bytes into savedTree
-	int elements = 0;
 	for (uint16_t i = 0; i < treeSize; i++)
 	{
 		fread(&savedTree[i], sizeof(uint8_t), 1, sFile);
-		elements++;
 	}
 	for (uint16_t i = 0; i < treeSize; i++)
 	{
 		printf("%d ", savedTree[i]);
 	}
-	printf("\n%d elements", elements);
-	// use previously mentioned array to reconstruct your Huffman tree using loadTree (use a stack)
-	// treeNode *tree = loadTree(savedTree, treeSize);
 
-	// printTree(tree, treeSize * 3 - 1);	
+	// use previously mentioned array to reconstruct your Huffman tree using loadTree (use a stack)
+	treeNode *tree = loadTree(savedTree, treeSize);
+
+	// printTree(tree, 1);	
+	printf("\n%llu\n", (*tree).count);
 	
 	return 0;
 }
