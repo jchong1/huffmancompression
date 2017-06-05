@@ -17,6 +17,8 @@
 # define OPTIONS "i:o:v"
 # define MAGIC 0xdeadd00d
 
+uint64_t getFileSize(FILE *fp);
+
 int main(int argc, char *argv[])
 {
 	int d;
@@ -93,16 +95,31 @@ int main(int argc, char *argv[])
 	// use previously mentioned array to reconstruct your Huffman tree using loadTree (use a stack)
 	treeNode *tree = loadTree(savedTree, treeSize);
 
-	// printTree(tree, 0);	
-	printf("%c\n", (*tree).symbol);
+	uint64_t size = getFileSize(sFile);
+	printf("Size: %llu\n", size);
 
-	// fseek(sFile, SEEK_CUR, SEEK_END);
-
-	for (uint64_t i = 0; i < oFileSize * 8; i++)
+	int32_t symbol;
+	for (uint64_t i = 0; i < size + 1; i++)
 	{
-		printf("%d", getBit(sFile));
+		symbol = stepTree(tree, &tree, getBit(sFile));
+		if (symbol != -1)
+		{
+			printf("%c", symbol);
+		}
+
 	}
 	
 	return 0;
 }
 
+uint64_t getFileSize(FILE *fp)
+{
+	int32_t size = 0;
+	int32_t currentPos = ftell(fp); // Save current position
+	printf("Current position: %d\n", currentPos);
+	fseek(fp, 0, SEEK_END); // Go to end of file
+	printf("End of file position: %ld\n", ftell(fp));
+	size = ftell(fp) - currentPos;	 // Get number of bytes
+	fseek(fp, -size, SEEK_END); // Reset to current position
+	return size;
+}

@@ -6,4 +6,4 @@
 *.class
 a.out
 .DS_Store
-*.dYSM
+*.dSYM

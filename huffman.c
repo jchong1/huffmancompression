@@ -185,19 +185,23 @@ treeNode *loadTree(uint8_t savedTree[], uint16_t treeBytes)
 // Step through a tree following the code
 int32_t stepTree(treeNode *root, treeNode **t, uint32_t code)
 {
+	printf("bit recieved: %d\n", code);
 	// If a bit of value 0 is read, move into the left child of the tree.
 	if (code == 0)
 	{
 		*t = (*t)->left;
+		printf("going left, symbol: %c\n", (*t)->symbol);
 	}
 	// If a bit of 1 is read, then move into the right child of the tree.
 	if (code == 1)
 	{
+		printf("going right, symbol: %c\n", (*t)->symbol);
 		*t = (*t)->right;
 	}
 	// If at a leaf node, then return the symbol for that leaf node and reset your state to be back at the root.
 	if ((*t)->leaf)
 	{
+		printf("returning leaf node\n");
 		int32_t s = (int32_t)(*t)->symbol;
 		*t = root;
 		return s;
