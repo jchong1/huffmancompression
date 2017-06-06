@@ -28,16 +28,18 @@ void delTreeStack(treestack *s)
 }	
 
 // Return the top treeitem
-treeitem popTree(treestack *s)
+treeitem *popTree(treestack *s)
 {
 	if (s -> top > 0)
     {
-        s -> top -= 1;
-        return s -> entries[s -> top];
+        treeitem *element = calloc(1, sizeof(treeitem));
+        *element = s->entries[--s->top];
+        printf("popping element with symbol: %c\n", element->symbol);
+        return element;
     }
     else
     {
-        return s -> entries[s -> top];
+        return NULL;
     }
 }	
 
@@ -49,8 +51,7 @@ void pushTree(treestack *s, treeitem i)
         s -> size *= 2;
         s -> entries = (treeitem *) realloc(s -> entries, s -> size * sizeof(treeitem));
     }
-    s -> entries[s->top] = i;
-    s -> top += 1;
+    s->entries[s->top++] = i;
     return;
 }	
 

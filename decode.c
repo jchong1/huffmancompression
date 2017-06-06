@@ -95,16 +95,22 @@ int main(int argc, char *argv[])
 
 	// use previously mentioned array to reconstruct your Huffman tree using loadTree (use a stack)
 	treeNode *tree = loadTree(savedTree, treeSize);
-    printf("left: %c right: %lu \n\n", tree->right->right->left->symbol, tree->right->count);
+    treeNode **treeP = calloc(1, sizeof(treeNode *));
+    *treeP = tree;
 
+    printf("complete tree: \n");
+    printTree(tree, 0);
 
 	int32_t symbol;
-	while (ftell(oFile) < oFileSize)
+    uint64_t count = 0;
+	while(count < oFileSize)
 	{
-		symbol = stepTree(tree, &tree, getBit(sFile));
+		symbol = stepTree(tree, treeP, getBit(sFile));
 		if (symbol != -1)
 		{
-			fputc(oFile, symbol);
+			fputc(symbol, oFile);
+            *treeP = tree;
+            count++;
 		}
 
 	}

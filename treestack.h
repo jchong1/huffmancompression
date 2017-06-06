@@ -17,7 +17,7 @@ typedef struct treestack
 treestack *newTreeStack();			// Constructor
 void delTreeStack(treestack *);		// Deconstructor
 
-treeitem popTree (treestack *);			// Returns the top item
+treeitem *popTree (treestack *);			// Returns the top item
 void pushTree(treestack *, treeitem);	// Adds an item to the top
 
 bool emptyTree(treestack *);		// Is it empty?
