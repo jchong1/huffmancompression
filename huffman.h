@@ -51,7 +51,7 @@ void buildCode(treeNode *, code, code *);
 void printTree(treeNode *, int);
 
 // Delete a tree
-treeNode *delTree(treeNode *);
+void delTree(treeNode *);
 
 static inline void spaces(int c) { for (int i = 0; i < c; i += 1) { putchar(' '); } return; }
 

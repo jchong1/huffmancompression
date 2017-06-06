@@ -34,7 +34,6 @@ treeitem *popTree(treestack *s)
     {
         treeitem *element = calloc(1, sizeof(treeitem));
         *element = s->entries[--s->top];
-        printf("popping element with symbol: %c\n", element->symbol);
         return element;
     }
     else

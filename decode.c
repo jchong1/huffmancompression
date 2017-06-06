@@ -20,6 +20,7 @@
 int main(int argc, char *argv[])
 {
 	int d;
+    bool v = false;
 	FILE *sFile = NULL, *oFile = NULL;
 	uint32_t magicNum = 0;
 	uint64_t oFileSize = 0;
@@ -32,7 +33,7 @@ int main(int argc, char *argv[])
 			case 'i':
 			{
 				// file being read from
-				sFile = fopen(strdup(optarg), "r");
+				sFile = fopen(optarg, "r");
 				break;
 			}
 			case 'o':
@@ -44,6 +45,7 @@ int main(int argc, char *argv[])
 			case 'v':
 			{
 				// verbose option
+                v = true;
 				break;
 			}
 		}
@@ -73,11 +75,9 @@ int main(int argc, char *argv[])
 	
 	// Read next 8 bytes of the sFile to get exact size of oFile
 	fread(&oFileSize, sizeof(uint8_t), 8, sFile);
-	printf("File size: %lu\n", oFileSize);
 
 	// Read next 2 bytes of sFile and call it treeSize
 	fread(&treeSize, sizeof(uint8_t), 2, sFile);
-	printf("Tree Size: %d\n", treeSize);
 
 	// Allocate an array(savedTree) of uint8_t’s which is treeSize long
 	uint8_t *savedTree = (uint8_t *) calloc(treeSize, sizeof(uint8_t));
@@ -87,33 +87,36 @@ int main(int argc, char *argv[])
 	{
 		fread(&savedTree[i], sizeof(uint8_t), 1, sFile);
 	}
-	for (uint16_t i = 0; i < treeSize; i++)
-	{
-		printf("%c ", savedTree[i]);
-	}
-    printf("\n\n");
 
 	// use previously mentioned array to reconstruct your Huffman tree using loadTree (use a stack)
 	treeNode *tree = loadTree(savedTree, treeSize);
+
+    // Create a pointer to the tree
     treeNode **treeP = calloc(1, sizeof(treeNode *));
     *treeP = tree;
 
-    printf("complete tree: \n");
-    printTree(tree, 0);
-
 	int32_t symbol;
-    uint64_t count = 0;
+    uint64_t count = 0; // Number of bytes written
+    uint64_t bitCount = 0; // Number of bits read
 	while(count < oFileSize)
 	{
-		symbol = stepTree(tree, treeP, getBit(sFile));
-		if (symbol != -1)
+		symbol = stepTree(tree, treeP, getBit(sFile)); 
+        bitCount++;
+		if (symbol != -1) // Returns -1 when on an internal node
 		{
-			fputc(symbol, oFile);
-            *treeP = tree;
-            count++;
+			fputc(symbol, oFile); // Write symbol
+            *treeP = tree; // Reset the tree pointer to root once leaf found
+            count++; 
 		}
-
 	}
+    if (v)
+    {
+        printf("Original %lu bits: tree (%d)\n", bitCount, treeSize);
+    }
+
+    free(treeP);
+    free(savedTree);
+    delTree(tree);
     fclose(sFile);
     fclose(oFile);
 	
