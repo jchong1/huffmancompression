@@ -43,7 +43,7 @@ int dumpTreeHelp(buf *, treeNode *);
 treeNode *loadTree(uint8_t *, uint16_t);
 
 // Step through a tree following the code
-int32_t stepTree(treeNode *, treeNode **, uint32_t);
+int32_t stepTree(treeNode **, uint32_t);
 
 // Parse a Huffman tree to build codes
 void buildCode(treeNode *, code, code *);

@@ -100,7 +100,7 @@ int main(int argc, char *argv[])
     char text[oFileSize];
 	while(byteCount < oFileSize)
 	{
-		symbol = stepTree(tree, treeP, getBit(sFile)); 
+		symbol = stepTree(treeP, getBit(sFile)); 
         bitCount++;
 		if (symbol != -1) // Returns -1 when on an internal node
 		{

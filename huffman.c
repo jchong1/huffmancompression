@@ -180,7 +180,7 @@ treeNode *loadTree(uint8_t savedTree[], uint16_t treeBytes)
 }
 
 // Step through a tree following the code
-int32_t stepTree(treeNode *root, treeNode **t, uint32_t code)
+int32_t stepTree(treeNode **t, uint32_t code)
 {
 	// If a bit of value 0 is read, move into the left child of the tree.
 	if (code == 0)
