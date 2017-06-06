@@ -127,16 +127,16 @@ void printTree(treeNode *t, int depth)
 		{
 			if (t->symbol)
 			{
-				spaces(4 * depth); printf("'%c' (%llu)\n", t->symbol, t->count);
+				spaces(4 * depth); printf("'%c' (%lu)\n", t->symbol, t->count);
 			}
 			else
 			{
-				spaces(4 * depth); printf("0x%X (%llu)\n", t->symbol, t->count);
+				spaces(4 * depth); printf("0x%X (%lu)\n", t->symbol, t->count);
 			}
 		}
 		else
 		{
-			spaces(4 * depth); printf("$ (%llu)\n", t->count);
+			spaces(4 * depth); printf("$ (%lu)\n", t->count);
 		}
 		printTree(t->right, depth + 1); 
 	}
@@ -168,17 +168,19 @@ treeNode *loadTree(uint8_t savedTree[], uint16_t treeBytes)
 		{
 			treeNode right = popTree(s);
 			treeNode left = popTree(s);
-			treeNode *interior = join(&left, &right);
+			treeNode *interior = join(&left, &right); // the ampersands are sus af
 			pushTree(s, *interior);
 			i += 1;
-			printf("Pushing joined nodes with right: %c left: %c\n", right.symbol, left.symbol);
+            // printf("Parent symbol: %c Parent count: %lu\n", interior->symbol, interior->count);
+			printf("Pushing joined nodes with left: %c right: %c\n\n", interior->left->symbol, interior->right->symbol);
 		}
 		// i += 2; // increment by 2
 	}
 	// After you finish iterating the loop, pop one last time. 
 	// This should give you back the root of your Huffman tree.
-	treeNode *root = (treeNode *) malloc(sizeof(treeNode));
+	treeNode *root = (treeNode *) calloc(1, sizeof(treeNode));
 	*root = popTree(s);
+    printf("test: %c\n", root->right->symbol);
 	return root;
 }
 
@@ -193,7 +195,7 @@ int32_t stepTree(treeNode *root, treeNode **t, uint32_t code)
 		printf("going left, symbol: %c\n", (*t)->symbol);
 	}
 	// If a bit of 1 is read, then move into the right child of the tree.
-	if (code == 1)
+    else if (code == 1)
 	{
 		printf("going right, symbol: %c\n", (*t)->symbol);
 		*t = (*t)->right;
@@ -201,9 +203,9 @@ int32_t stepTree(treeNode *root, treeNode **t, uint32_t code)
 	// If at a leaf node, then return the symbol for that leaf node and reset your state to be back at the root.
 	if ((*t)->leaf)
 	{
-		printf("returning leaf node\n");
-		int32_t s = (int32_t)(*t)->symbol;
+		int32_t s = (int32_t) (*t)->symbol;
 		*t = root;
+        printf("returning leaf node with symbol: %c\n\n", s);
 		return s;
 	}
 	// Else, you are at an interior node so return −1, to signify that a leaf node has not yet been reached.
