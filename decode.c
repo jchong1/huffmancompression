@@ -54,6 +54,8 @@ int main(int argc, char *argv[])
 		printf("Error: must have an input file\n");
 		exit(1);
 	}
+
+	// Default to stdout
 	if (oFile == NULL)
 	{
 		oFile = stdout;
@@ -97,12 +99,12 @@ int main(int argc, char *argv[])
 
 
 	int32_t symbol;
-	for (uint64_t i = 0; i < oFileSize; i++)
+	while (ftell(oFile) < oFileSize)
 	{
 		symbol = stepTree(tree, &tree, getBit(sFile));
 		if (symbol != -1)
 		{
-			printf("%c", symbol);
+			fputc(oFile, symbol);
 		}
 
 	}
