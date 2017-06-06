@@ -171,7 +171,6 @@ treeNode *loadTree(uint8_t savedTree[], uint16_t treeBytes)
 			pushTree(s, *interior);
 		}
         i++;
-		// i += 2; // increment by 2
 	}
 	// After you finish iterating the loop, pop one last time. 
 	// This should give you back the root of your Huffman tree.

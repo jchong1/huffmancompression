@@ -7,7 +7,6 @@
 # include <fcntl.h>
 # include <string.h>
 
-// # include "queue.h"
 # include "huffman.h"
 # include "treestack.h"
 # include "code.h"
@@ -91,27 +90,33 @@ int main(int argc, char *argv[])
 	// use previously mentioned array to reconstruct your Huffman tree using loadTree (use a stack)
 	treeNode *tree = loadTree(savedTree, treeSize);
 
-    // Create a pointer to the tree
+    // Create a pointer to tree
     treeNode **treeP = calloc(1, sizeof(treeNode *));
     *treeP = tree;
 
 	int32_t symbol;
-    uint64_t count = 0; // Number of bytes written
+    uint64_t byteCount = 0; // Number of bytes written
     uint64_t bitCount = 0; // Number of bits read
-	while(count < oFileSize)
+    char text[oFileSize];
+	while(byteCount < oFileSize)
 	{
 		symbol = stepTree(tree, treeP, getBit(sFile)); 
         bitCount++;
 		if (symbol != -1) // Returns -1 when on an internal node
 		{
-			fputc(symbol, oFile); // Write symbol
+			text[byteCount] = symbol;
             *treeP = tree; // Reset the tree pointer to root once leaf found
-            count++; 
+            byteCount++; 
 		}
 	}
+
     if (v)
     {
         printf("Original %lu bits: tree (%d)\n", bitCount, treeSize);
+    }
+    for (uint64_t i = 0; i < oFileSize; i++)
+    {
+        fputc(text[i], oFile);
     }
 
     free(treeP);
