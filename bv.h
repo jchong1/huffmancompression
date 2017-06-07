@@ -30,4 +30,5 @@ uint32_t lenVec(bitV *); // Return the length of the vector
 void appendVec(bitV *, code); // Append a code to the bitvector
 
 uint32_t getBit(FILE *); // Save bits from an input stream
+
 # endif

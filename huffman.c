@@ -3,30 +3,26 @@
 # include <stdint.h>
 # include <stdbool.h>
 # include <unistd.h>
+# include <ctype.h>
+# include <fcntl.h>
 
 # include "huffman.h"
 # include "treestack.h"
 # include "code.h"
 
-treeNode *newNode(uint8_t , bool , uint64_t);
-buf *newBuffer();
-treeNode *loadTree(uint8_t *, uint16_t);
-int32_t stepTree(treeNode **, uint32_t);
-void buildCode(treeNode *, code, code *);
-void delTree(treeNode *);
-void printTree(treeNode *, int);
+bool oFlag = false;
 
 // New node, with symbols, leaf or not, a count associated with it
 treeNode *newNode(uint8_t s, bool l, uint64_t c)
 {
 	// allocate space for a treeNode
-	treeNode *node = (treeNode *) calloc(1, sizeof(treeNode));
+	treeNode *node = (treeNode *) malloc(sizeof(treeNode));
 	// set members of struct treeNode
-	node -> symbol = s;
-	node -> leaf = l;
-	node -> count = c;
-	node -> right = NULL;
-	node -> left = NULL;
+	node->symbol = s;
+	node->leaf = l;
+	node->count = c;
+	node->right = NULL;
+	node->left = NULL;
 	return node;
 }
 
@@ -42,20 +38,19 @@ buf *newBuffer()
 // Parse a Huffman tree to build codes
 void buildCode(treeNode *t, code s, code table[256])
 {
-	static uint32_t index = 0; 
 	if (t->leaf) // if node is a leaf (base case)
 	{
 		// record current stack in code table
-		table[index++] = s;
-		printf("record current stack in table!");
+		table[t->symbol] = s;
 	}
 	else
 	{
-		uint32_t ret;
-		pushCode(&s, 0);
+		uint32_t ret = 0;
+		pushCode(&s, ret);
 		buildCode(t->left, s, table);
 		popCode(&s, &ret);
-		pushCode(&s, 1);
+		ret = 1;
+		pushCode(&s, ret);
 		buildCode(t->right, s, table);
 		popCode(&s, &ret);
 	}
@@ -63,16 +58,31 @@ void buildCode(treeNode *t, code s, code table[256])
 }
 
 // Dump a Huffman tree onto a file
-void dumpTree(treeNode *t, int file)
+void dumpTree(treeNode *t, char *oFile)
 {
 	buf *b = newBuffer();
-	int pos = dumpTreeHelp(b, t);
-	write(file, b, pos);
+	dumpTreeHelp(b, t);
+	FILE *output;
+ 	if (oFlag)
+ 	{
+ 		output = fopen(oFile, "a");
+ 	}
+ 	else
+ 	{
+ 		output = stdout;
+ 	}
+	fwrite(b->arr, 1, b->pos, output);
+    if (oFlag)
+    {
+        fclose(output);
+    }
+    free(b->arr);
+    free(b);
 	return;
 }
 
 // Helper function for dumpTree (pseudocode given by Arjun)
-int dumpTreeHelp(buf *b, treeNode *t)
+void dumpTreeHelp(buf *b, treeNode *t)
 {
 	if (t->leaf)
 	{
@@ -85,20 +95,20 @@ int dumpTreeHelp(buf *b, treeNode *t)
 		dumpTreeHelp(b, t->right);
 		b->arr[b->pos++] = 'I';
 	}
-	return b->pos;
+	return;
 }
 
 // Delete a tree
 void delTree(treeNode *t)
 {
 	// while root of tree hasn't been deleted
-    if (t != NULL)
-    {
-        delTree(t->left);
-        delTree(t->right);
-        free(t);
-    }
-    return;
+	if (t != NULL)
+	{
+		delTree(t -> left);
+		delTree(t -> right);
+		free(t);
+	}
+	return;
 }
 
 // Join two subtrees
@@ -116,31 +126,6 @@ treeNode *join(treeNode *l, treeNode *r)
 	parent->right = r;
 	// return created node
 	return parent;
-}
-
-void printTree(treeNode *t, int depth)
-{
-	if (t) 
-	{
-		printTree(t->left, depth + 1);
-		if (t->leaf)
-		{
-			if (t->symbol)
-			{
-				spaces(4 * depth); printf("'%c' (%lu)\n", t->symbol, t->count);
-			}
-			else
-			{
-				spaces(4 * depth); printf("0x%X (%lu)\n", t->symbol, t->count);
-			}
-		}
-		else
-		{
-			spaces(4 * depth); printf("$ (%lu)\n", t->count);
-		}
-		printTree(t->right, depth + 1); 
-	}
-	return;
 }
 
 // Build a tree from the saved tree
@@ -205,3 +190,28 @@ int32_t stepTree(treeNode **t, uint32_t code)
 	}
 }
 
+void printTree(treeNode *t, int depth)
+{
+	if (t) 
+	{
+		printTree(t->left, depth + 1);
+
+		if (t->leaf)
+		{
+			if (isalnum(t->symbol))
+			{
+				spaces(4 * depth); printf("'%c' (%llu)\n", t->symbol, t->count);
+			}
+			else
+			{
+			spaces(4 * depth); printf("0x%X (%llu)\n", t->symbol, t->count);
+			}
+		}
+		else
+		{
+			spaces(4 * depth); printf("$ (%llu)\n", t->count);
+		}
+		printTree(t->right, depth + 1); 
+	}
+	return;
+}

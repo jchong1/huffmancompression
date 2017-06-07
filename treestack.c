@@ -12,25 +12,25 @@
 // Constructor
 treestack *newTreeStack()
 {
-	treestack *s = (treestack *) calloc(TREESTACK_SIZE, sizeof(treestack));
+    treestack *s = (treestack *) calloc(TREESTACK_SIZE, sizeof(treestack));
     s -> size = TREESTACK_SIZE;
     s -> top  = 0;
     s -> entries = (treeitem *) calloc(TREESTACK_SIZE, sizeof(treeitem));
     return s;
-}	
+}   
 
-// Deconstructor		
+// Deconstructor        
 void delTreeStack(treestack *s)
 {
-	free(s -> entries); 
-	free(s);
-	return; 
-}	
+    free(s -> entries); 
+    free(s);
+    return; 
+}   
 
 // Return the top treeitem
 treeitem *popTree(treestack *s)
 {
-	if (s -> top > 0)
+    if (s -> top > 0)
     {
         treeitem *element = calloc(1, sizeof(treeitem));
         *element = s->entries[--s->top];
@@ -40,28 +40,28 @@ treeitem *popTree(treestack *s)
     {
         return NULL;
     }
-}	
+}   
 
-// Add an treeitem to the top	
+// Add an treeitem to the top   
 void pushTree(treestack *s, treeitem i)
 {
-	if (s -> top == s -> size)
+    if (s -> top == s -> size)
     {
         s -> size *= 2;
         s -> entries = (treeitem *) realloc(s -> entries, s -> size * sizeof(treeitem));
     }
     s->entries[s->top++] = i;
     return;
-}	
+}   
 
 // Is it empty?
 bool emptyTree(treestack *s)
 {
-	return s -> top == 0;
+    return s -> top == 0;
 }
 
-// It it full?	
+// It it full?  
 bool fullTree(treestack *s)
 {
-	return s -> top == TREESTACK_SIZE;
-}	
+    return s -> top == TREESTACK_SIZE;
+}   

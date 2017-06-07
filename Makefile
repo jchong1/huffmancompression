@@ -1,34 +1,35 @@
 CC = gcc
 CFLAGS = -Wall -Wextra -Wpedantic -Werror -g
-ENCODE_OBJECTS = encode.o huffman.o treestack.o queue.o 
+ENCODE_OBJECTS = encode.o huffman.o treestack.o queue.o bv.o
 DECODE_OBJECTS = decode.o huffman.o treestack.o bv.o
 
-.PHONY: all 
-all: encode decode
+.PHONY : all 
+all : encode decode
 
-encode: $(ENCODE_OBJECTS)
+encode : $(ENCODE_OBJECTS)
 	$(CC) $(CFLAGS) $(ENCODE_OBJECTS) $(CFLAGS) -o encode
+
 decode: $(DECODE_OBJECTS)
-	$(CC) $(CFLAGS) -o decode $(DECODE_OBJECTS) 
+	$(CC) $(CFLAGS) $(DECODE_OBJECTS) $(CFLAGS) -o decode 
 
-decode.o : decode.c
-		$(CC) $(CFLAGS) -c decode.c
-
-encode.o: encode.c
+encode.o : encode.c
 	$(CC) $(CFLAGS) -c encode.c
 
-huffman.o: huffman.c
+decode.o : decode.c
+	$(CC) $(CFLAGS) -c decode.c
+
+huffman.o : huffman.c
 	$(CC) $(CFLAGS) -c huffman.c
 
-treestack.o: treestack.c
+treestack.o : treestack.c
 	$(CC) $(CFLAGS) -c treestack.c
 
-queue.o: queue.c
+queue.o : queue.c
 	$(CC) $(CFLAGS) -c queue.c
 
 bv.o : bv.c
 	$(CC) $(CFLAGS) -c bv.c
 
-.PHONY: clean 
-clean:
+.PHONY : clean 
+clean :
 	rm -f *.o encode decode

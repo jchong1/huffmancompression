@@ -34,10 +34,10 @@ treeNode *newNode(uint8_t , bool , uint64_t);
 buf *newBuffer();
 
 // Dump a Huffman tree onto a file
-void dumpTree(treeNode *, int);
+void dumpTree(treeNode *, char *);
 
 // Helper function for dumpTree (pseudocode given by Arjun)
-int dumpTreeHelp(buf *, treeNode *);
+void dumpTreeHelp(buf *, treeNode *);
 
 // Build a tree from the saved tree
 treeNode *loadTree(uint8_t *, uint16_t);

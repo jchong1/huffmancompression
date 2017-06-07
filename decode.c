@@ -116,7 +116,7 @@ int main(int argc, char *argv[])
     // Print out stats for verbose option
     if (v)
     {
-        printf("Original %lu bits: tree (%d)\n", bitCount, treeSize);
+        printf("Original %llu bits: tree (%d)\n", bitCount, treeSize);
     }
 
     // Write text to oFile
@@ -130,7 +130,6 @@ int main(int argc, char *argv[])
     delTree(tree);
     fclose(sFile);
     fclose(oFile);
-	
+
 	return 0;
 }
-

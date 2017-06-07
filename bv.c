@@ -19,7 +19,6 @@ void delVec(bitV * v)
 {
 	free(v->vector);
 	free(v);
-	v->vector = NULL;
 	v = NULL;
 	return;
 }
@@ -99,26 +98,3 @@ uint32_t getBit(FILE *fp)
 	bp++;
 	return bit;
 }
-
-// int main(void)
-// {
-// 	bitV *v = newVec(sizeof(uint8_t));
-// 	code c1 = newCode();
-// 	pushCode(&c1, 1);
-// 	pushCode(&c1, 1);
-// 	pushCode(&c1, 1);
-// 	pushCode(&c1, 1);
-// 	pushCode(&c1, 1);
-// 	appendVec(v, c1);
-// 	printf("Bitvector: ");
-// 	for (uint32_t i = 0; i < v->length; i++)
-// 	{
-// 		printf("%u ", valBit(v, i));
-// 	}
-// 	printf("\nCode: ");
-// 	for (uint32_t i = 0; i < c1.l; i++)
-// 	{
-// 		printf("%d ", c1.bits[i >> 3] >> (i & 07) & 01);
-// 	}
-// }
-
