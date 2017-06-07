@@ -38,7 +38,7 @@ int main(int argc, char *argv[])
 			case 'o':
 			{
 				// file being written to (defaults to stdout if no file)
-				oFile = fopen(strdup(optarg), "w");
+				oFile = fopen(strdup(optarg), "w+");
 				break;
 			}
 			case 'v':
@@ -52,7 +52,7 @@ int main(int argc, char *argv[])
 	// Throw an error if there is not input file
 	if (sFile == NULL)
 	{
-		printf("Error: must have an input file\n");
+		printf("Error: must specify a valid input file with flag -i\n");
 		exit(1);
 	}
 
@@ -61,6 +61,8 @@ int main(int argc, char *argv[])
 	{
 		oFile = stdout;
 	}
+
+    /******************************************************************************************************/
 
 	// Read in magic number
 	fread(&magicNum, sizeof(uint8_t), 4, sFile);
@@ -98,22 +100,26 @@ int main(int argc, char *argv[])
     uint64_t byteCount = 0; // Number of bytes written
     uint64_t bitCount = 0; // Number of bits read
     char text[oFileSize];
+
 	while(byteCount < oFileSize)
 	{
 		symbol = stepTree(treeP, getBit(sFile)); 
         bitCount++;
 		if (symbol != -1) // Returns -1 when on an internal node
 		{
-			text[byteCount] = symbol;
+			text[byteCount] = symbol; // Save symbol to an array
             *treeP = tree; // Reset the tree pointer to root once leaf found
             byteCount++; 
 		}
 	}
 
+    // Print out stats for verbose option
     if (v)
     {
         printf("Original %lu bits: tree (%d)\n", bitCount, treeSize);
     }
+
+    // Write text to oFile
     for (uint64_t i = 0; i < oFileSize; i++)
     {
         fputc(text[i], oFile);
