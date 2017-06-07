@@ -21,5 +21,6 @@ bool empty(queue **);	// Is it empty?
 
 bool enqueue(queue **, item *); // Add an item
 bool dequeue(queue **); // Remove from the rear 
+void printQueue(queue **);
 
 # endif

@@ -1,7 +1,17 @@
 # include <stdio.h>
 # include <stdint.h>
+# include <stdlib.h>
 # include <unistd.h>
 # include <stdbool.h>
+# include <sys/stat.h>
+# include <fcntl.h>
+# include <string.h>
+
+# include "huffman.h"
+# include "treestack.h"
+# include "code.h"
+# include "stack.h"
+# include "bv.h"
 
 # define OPTIONS "i:o:v"
 # define MAGIC 0xdeadd00d
@@ -9,97 +19,117 @@
 int main(int argc, char *argv[])
 {
 	int d;
-	char *sFile = NULL, *oFile = stdout;
-	uint32_t magicNum;
-	uint64_t oFileSize;
-	uint8_t treeSize;
+    bool v = false;
+	FILE *sFile = NULL, *oFile = NULL;
+	uint32_t magicNum = 0;
+	uint64_t oFileSize = 0;
+	uint16_t treeSize = 0;
 
-	while (d = getopt(argc, argv, OPTIONS) != -1)
+	while ((d = getopt(argc, argv, OPTIONS)) != -1)
 	{
 		switch (d)
 		{
-			case i:
+			case 'i':
 			{
 				// file being read from
-				sFile = strdup(optarg);
+				sFile = fopen(optarg, "r");
 				break;
 			}
-			case o:
+			case 'o':
 			{
-				// file being written to (default stdout)
-				oFile = strdup(optarg);
+				// file being written to (defaults to stdout if no file)
+				oFile = fopen(strdup(optarg), "w+");
 				break;
 			}
-			case v:
+			case 'v':
 			{
 				// verbose option
+                v = true;
 				break;
 			}
 		}
 	}
-
-	// throw an error, need a file to decode
+	// Throw an error if there is not input file
 	if (sFile == NULL)
 	{
-		printf("Must have an input file.");
+		printf("Error: must specify a valid input file with flag -i\n");
 		exit(1);
 	}
 
-	FILE *sFP = fopen(sFile, "r");
-	FILE *oFP = fopen(oFile, "w");
+	// Default to stdout
+	if (oFile == NULL)
+	{
+		oFile = stdout;
+	}
+
+    /******************************************************************************************************/
 
 	// Read in magic number
-	fread(magicNum, sizeof(magicNum), sFP);
+	fread(&magicNum, sizeof(uint8_t), 4, sFile);
 
 	// If magic number doesn't match 0xdeadd00d, display error message and quit.
 	if (magicNum != MAGIC)
 	{
-		printf("File compressed incorrectly, exiting...");
+		printf("Error: file not compressed or compressed incorrectly\n");
 		exit(1);
 	}
 	
 	// Read next 8 bytes of the sFile to get exact size of oFile
-	fread(oFileSize, sizeof(oFileSize), sFP);
+	fread(&oFileSize, sizeof(uint8_t), 8, sFile);
 
 	// Read next 2 bytes of sFile and call it treeSize
-	fread(treeSize, sizeof(treeSize), sFP);
+	fread(&treeSize, sizeof(uint8_t), 2, sFile);
 
 	// Allocate an array(savedTree) of uint8_t’s which is treeSize long
-	uint8_t savedTree = calloc(treeSize, sizeof(uint8_t));
+	uint8_t *savedTree = (uint8_t *) calloc(treeSize, sizeof(uint8_t));
 
 	// Read in the sFile for treeSize bytes into savedTree
-	fread(savedTree, treeSize, sFP);
+	for (uint16_t i = 0; i < treeSize; i++)
+	{
+		fread(&savedTree[i], sizeof(uint8_t), 1, sFile);
+	}
 
 	// use previously mentioned array to reconstruct your Huffman tree using loadTree (use a stack)
+	treeNode *tree = loadTree(savedTree, treeSize);
 
-	//	a) Iterate contents of savedTree from 0 to treeSize.
+    // Create a pointer to tree
+    treeNode **treeP = calloc(1, sizeof(treeNode *));
+    *treeP = tree;
 
-	//	b) If the element of the array is an L, then the next element will be the symbol for the leaf node. Use that
-	//	   symbol to create a node using newNode. Now, push this new node back onto the stack.
+	int32_t symbol;
+    uint64_t byteCount = 0; // Number of bytes written
+    uint64_t bitCount = 0; // Number of bits read
+    char text[oFileSize];
 
-	//	c) If the element of the array is an I, then you have encountered an interior node. 
-	//     At this point, you pop once to get the right child of the interior child and then pop again to acquire the left child. 
-	//	   Now, create the interior node using join and then push the interior node back into the stack.
+	while(byteCount < oFileSize)
+	{
+		symbol = stepTree(treeP, getBit(sFile)); 
+        bitCount++;
+		if (symbol != -1) // Returns -1 when on an internal node
+		{
+			text[byteCount] = symbol; // Save symbol to an array
+            *treeP = tree; // Reset the tree pointer to root once leaf found
+            byteCount++; 
+		}
+	}
 
-	//	d) After you finish iterating the loop, pop one last time. This should give you back the root of your Huffman tree.
+    // Print out stats for verbose option
+    if (v)
+    {
+        printf("Original %llu bits: tree (%d)\n", bitCount, treeSize);
+    }
 
-	// Read in a bit at a time from the sFile. For each bit, step through the tree using stepTree.
+    // Write text to oFile
+    for (uint64_t i = 0; i < oFileSize; i++)
+    {
+        fputc(text[i], oFile);
+    }
 
-	//	a) Begin at the root of the Huffman tree. If a bit of value 0 is read, move into left child of the tree. 
-	//	   If a bit of 1 is read, then move into the right child of the tree.
+    free(treeP);
+    free(savedTree);
+    delTree(tree);
+    fclose(sFile);
+    fclose(oFile);
 
-	//  b) In case after stepping you are at a leaf node, then return the symbol for that leaf node and reset 
-	//     your state to be back at the root.  Output this symbol onto the oFile. 
-	//     Note: You may buffer these symbols into an array and then write out the entire array once at the end. 
-	//     Hint: The size of this array should be known to you because of step 2 (read next 8 bytes of sFile)
-	
-	//	c) if after stepping you are at an interior node, return −1 to show that a leaf node has not yet been reached.
-
-	//  d) Repeat until all bits in the sFile have been exhausted
-	//     (Caution:there may very well be a few extrabits in the last byte, 
-	//      and those could make a symbol; emitting that symbol would be wrong).
-
-	// At this point, you should have a fully decompressed oFile which should match the size of the original file.
-	
 	return 0;
 }

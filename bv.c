@@ -1,6 +1,9 @@
 # include <stdlib.h>
 # include <math.h>
+# include <stdio.h>
+
 # include "bv.h"
+# include "code.h"
 
 bitV *newVec(uint32_t length)
 {
@@ -8,6 +11,7 @@ bitV *newVec(uint32_t length)
 	v = (bitV *)malloc(sizeof(bitV));
 	v->length = length;
 	v->vector = malloc(sizeof(uint8_t) * length/8+1);
+	v->position = 0;
 	return v;
 }
 
@@ -15,7 +19,6 @@ void delVec(bitV * v)
 {
 	free(v->vector);
 	free(v);
-	v->vector = NULL;
 	v = NULL;
 	return;
 }
@@ -43,10 +46,55 @@ void oneVec(bitV * v)
 
 uint8_t valBit(bitV * v, uint32_t index)
 {
-	return (v->vector[index>>3] >> (index&07)) & 01;
+	return (v->vector[index >> 3] >> (index & 07)) & 01;
 }
 
 uint32_t lenVec(bitV * v)
 {
 	return v->length;
+}
+
+void appendVec(bitV *v, code t)
+{
+	// Allocate more memory if there isn't enough space
+	if (v->position == (v->length - 1))
+	{
+		v->length += t.l;
+		v->vector = (uint8_t *) realloc(v->vector, v->length / 8 + 1);
+	}
+
+	// Loop through the bits of the code
+	for (uint32_t i = 0; i < t.l; i++)
+	{
+		// Check the value of bit in code
+		if ((t.bits[i >> 3] >> (i & 07)) & 01)
+		{
+			setBit(v, ++(v->position)); // append bit
+		}
+
+		else
+		{
+			clrBit(v, ++(v->position)); // append bit
+		}
+	}
+	return;
+}
+
+uint32_t getBit(FILE *fp)
+{
+
+	static int bp = 0; 						// points to bit in buffer
+	static uint8_t buffer[sizeof(uint8_t)]; // buffer to store a byte
+	uint8_t bit;
+	// bitV *v = newVec(numBytes * 8); 		// bit vector to store bits in
+
+	if (bp % 8 == 0) 						// read next byte
+	{
+		bp = 0;
+		fread(&buffer[0], sizeof(uint8_t), 1, fp);
+	}
+
+	bit = buffer[bp >> 3] >> (bp & 07) & 01;
+	bp++;
+	return bit;
 }

@@ -67,7 +67,7 @@ bool enqueue(queue **head, item *item)
 			break;
 		}
 		// If item trying to insert greater than the current node
-		else if (item->count >= current->item->count && item->count <= nextNode->item->count)
+		else if (item->count > current->item->count && item->count <= nextNode->item->count)
 		{
 			// Insert the item
 			current->next = newLink(item);

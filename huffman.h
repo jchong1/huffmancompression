@@ -34,16 +34,16 @@ treeNode *newNode(uint8_t , bool , uint64_t);
 buf *newBuffer();
 
 // Dump a Huffman tree onto a file
-void dumpTree(treeNode *, int);
+void dumpTree(treeNode *, char *);
 
 // Helper function for dumpTree (pseudocode given by Arjun)
-int dumpTreeHelp(buf *, treeNode *);
+void dumpTreeHelp(buf *, treeNode *);
 
 // Build a tree from the saved tree
 treeNode *loadTree(uint8_t *, uint16_t);
 
 // Step through a tree following the code
-int32_t stepTree(treeNode *, treeNode **, uint32_t);
+int32_t stepTree(treeNode **, uint32_t);
 
 // Parse a Huffman tree to build codes
 void buildCode(treeNode *, code, code *);
@@ -51,7 +51,7 @@ void buildCode(treeNode *, code, code *);
 void printTree(treeNode *, int);
 
 // Delete a tree
-treeNode *delTree(treeNode *);
+void delTree(treeNode *);
 
 static inline void spaces(int c) { for (int i = 0; i < c; i += 1) { putchar(' '); } return; }
 
