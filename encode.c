@@ -85,6 +85,7 @@ int main(int argc, char **argv)
 	// Free allocated memory
 	free(histogram);
 	free(table);
+    delTree(head);
 	return 0;
 }
 
