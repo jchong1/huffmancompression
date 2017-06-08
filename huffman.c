@@ -45,6 +45,7 @@ void buildCode(treeNode *t, code s, code table[256])
 	}
 	else
 	{
+		// Boris helped with this code
 		uint32_t ret = 0;
 		pushCode(&s, ret);
 		buildCode(t->left, s, table);
@@ -190,6 +191,7 @@ int32_t stepTree(treeNode **t, uint32_t code)
 	}
 }
 
+// Given by DDELL
 void printTree(treeNode *t, int depth)
 {
 	if (t) 

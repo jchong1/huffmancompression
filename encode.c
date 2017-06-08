@@ -145,7 +145,9 @@ treeNode *loadNodes(uint32_t *histogram)
     	enqueue(head, parent);
   	}
   	treeSize = (3 * treeSize) - 1;
-    return (*head)->item;
+    treeNode *temp = (*head)->item;
+    delQueue(head);
+    return temp;
 }
 
 void loadOutput(char *outFile)
