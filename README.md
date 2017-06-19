@@ -19,7 +19,9 @@ default stdout.
 
 To compile:
 	$ make all
+
 To compress a file:
 	$ ./encode -i [file you want to compress] -o [file you want to write to]
+	
 to decode a file:
 	$ ./decode -i [File you want to decode] -o [file you want to write to, default stdout]
