@@ -216,7 +216,7 @@ void loadCodes(code *table, char *inFile, char *outFile, treeNode *head)
   			treeSize = 767;
   		}
   		float bitPercent = (float)(trimmedCode->length) / (float)(fileLength * 8);
-  		printf("Original %lu bits: ", 8 * fileLength);
+  		printf("Original %llu bits: ", 8 * fileLength);
   		printf("leaves %u (%u bytes) ", treeSize / 3 + 1, treeSize);
   		printf("encoding bits %u (%.4f%%).\n", trimmedCode->length, bitPercent * 100);
   	}

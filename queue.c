@@ -101,7 +101,7 @@ void printQueue(queue **head)
 	queue *temp = *head;
 	while (temp != NULL)
 	{
-		printf("%lu\n", temp->item->count);
+		printf("%llu\n", temp->item->count);
 		temp = temp->next;
 	}
 }
